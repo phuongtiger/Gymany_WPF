@@ -1,15 +1,8 @@
-﻿using System.DirectoryServices.ActiveDirectory;
-using System.Text;
-using System.Windows;
-using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
+﻿using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MyWPF.ViewModel;
+using MyWPF.Views;
+using MyWPF.Views.Order;
 
 namespace MyWPF
 {
@@ -18,14 +11,13 @@ namespace MyWPF
     /// </summary>
     public partial class MainWindow : Window
     {
-        private readonly ProductViewModel _productViewModel;
-        public MainWindow(ProductViewModel viewModel)
+        public MainWindow()
         {
             InitializeComponent();
-            _productViewModel = viewModel;
+            DataContext = new ProfileViewModel();
+            frMain.Content = new ProfileView();
         }
 
-        //private void Home_Click(object sender, RoutedEventArgs e) => frMain.Content = new HomeView();
         private bool IsMaximize = false;
         private void Border_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
         {
@@ -56,9 +48,15 @@ namespace MyWPF
             }
         }
 
-        private void Product_Click(object sender, RoutedEventArgs e) => frMain.Content = new ProductView(_productViewModel);
+        private void Profile_Click(object sender, RoutedEventArgs e) => frMain.Content = new ProfileView();
 
-       
+        private void Product_Click(object sender, RoutedEventArgs e) => frMain.Content = new ProductView();
+
+        private void Category_Click(object sender, RoutedEventArgs e) => frMain.Content = new CategoryView();
+
+        private void Order_Click(object sender, RoutedEventArgs e) => frMain.Content = new OrderView();
+
+
     }
 
 }

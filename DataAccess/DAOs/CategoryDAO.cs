@@ -3,30 +3,30 @@ using Model;
 
 namespace DataAccess.DAOs
 {
-    public class ProductDAO : SingleTonBase<ProductDAO>
+    public class CategoryDAO : SingleTonBase<CategoryDAO>
     {
-        public async Task<IEnumerable<Product>> GetListAll()
+        public async Task<IEnumerable<Category>> GetListAll()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Categories.ToListAsync();
         }
 
-        public async Task<Product> GetById(int id)
+        public async Task<Category> GetById(int id)
         {
-            var item = await _context.Products.FirstOrDefaultAsync(c => c.ProdId == id);
+            var item = await _context.Categories.FirstOrDefaultAsync(c => c.CateId == id);
             if (item == null) return null;
             return item;
         }
 
 
-        public async Task Add(Product item)
+        public async Task Add(Category item)
         {
-            _context.Products.Add(item);
+            _context.Categories.Add(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(Product item)
+        public async Task Update(Category item)
         {
-            var existingItem = await GetById(item.ProdId);
+            var existingItem = await GetById(item.CateId);
             if (existingItem != null)
             {
                 _context.Entry(existingItem).CurrentValues.SetValues(item);
@@ -39,7 +39,7 @@ namespace DataAccess.DAOs
             var item = await GetById(id);
             if (item != null)
             {
-                _context.Products.Remove(item);
+                _context.Categories.Remove(item);
                 await _context.SaveChangesAsync();
             }
 

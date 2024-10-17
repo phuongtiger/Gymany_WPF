@@ -1,32 +1,33 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using System;
+using Microsoft.EntityFrameworkCore;
 using Model;
 
 namespace DataAccess.DAOs
 {
-    public class ProductDAO : SingleTonBase<ProductDAO>
+    public class AdminDAO : SingleTonBase<AdminDAO>
     {
-        public async Task<IEnumerable<Product>> GetListAll()
+        public async Task<IEnumerable<Admin>> GetListAll()
         {
-            return await _context.Products.ToListAsync();
+            return await _context.Admins.ToListAsync();
         }
 
-        public async Task<Product> GetById(int id)
+        public async Task<Admin> GetById(int id)
         {
-            var item = await _context.Products.FirstOrDefaultAsync(c => c.ProdId == id);
+            var item = await _context.Admins.FirstOrDefaultAsync(c => c.AdminId == id);
             if (item == null) return null;
             return item;
         }
 
 
-        public async Task Add(Product item)
+        public async Task Add(Admin item)
         {
-            _context.Products.Add(item);
+            _context.Admins.Add(item);
             await _context.SaveChangesAsync();
         }
 
-        public async Task Update(Product item)
+        public async Task Update(Admin item)
         {
-            var existingItem = await GetById(item.ProdId);
+            var existingItem = await GetById(item.AdminId);
             if (existingItem != null)
             {
                 _context.Entry(existingItem).CurrentValues.SetValues(item);
@@ -39,7 +40,7 @@ namespace DataAccess.DAOs
             var item = await GetById(id);
             if (item != null)
             {
-                _context.Products.Remove(item);
+                _context.Admins.Remove(item);
                 await _context.SaveChangesAsync();
             }
 

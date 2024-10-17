@@ -1,15 +1,9 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.IO;
-using System.Linq;
-using System.Net;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
+using System.Windows;
 using System.Windows.Input;
-using System.Windows.Media.Imaging;
 using BussinessLogic.Interface;
-using BussinessLogic.Service;
+using GalaSoft.MvvmLight.Command;
+using Microsoft.Extensions.DependencyInjection;
 using Model;
 
 
@@ -19,29 +13,27 @@ namespace MyWPF.ViewModel
     {
         private readonly IProductService _productService;
         public ObservableCollection<Product> Products { get; set; } = new ObservableCollection<Product>();
-        private Product _newProduct = new Product();
-        private Product _selected;
-        public ICommand AddCommand { get; private set; }
-        public ICommand UpdateCommand { get; private set; }
+        public Product _newProduct = new Product();
+        public ICommand AddProductCommand { get; private set; }
+        public ICommand UpdateProductCommand { get; private set; }
         public ICommand DeleteCommand { get; private set; }
-        public ProductViewModel(IProductService productService)
+        public Action CloseAction { get; set; } 
+
+        public ProductViewModel()
         {
-            Products = new ObservableCollection<Product>();
-            _productService = productService;
-            _ = LoadStudent();
-            AddCommand = new RelayCommand(AddProduct);
-            UpdateCommand = new RelayCommand(UpdateProduct);
-            DeleteCommand = new RelayCommand(DeleteProduct);
+            _productService = App.ServiceProvider.GetRequiredService<IProductService>();
+            _ = LoadProduct();
+            AddProductCommand = new RelayCommand(AddProduct);
+            UpdateProductCommand = new RelayCommand(UpdateProduct);
+            DeleteCommand = new RelayCommand<int>(DeleteProduct);
         }
 
-        public ProductViewModel() { }
-
-        private async Task LoadStudent()
+        public async Task LoadProduct()
         {
             try
             {
-                var products = await _productService.GetListAllProduct();
                 Products.Clear();
+                var products = await _productService.GetListAllProduct();
                 foreach (var product in products)
                 {
                     Products.Add(product);
@@ -49,37 +41,21 @@ namespace MyWPF.ViewModel
             }
             catch (Exception ex)
             {
-                // Ghi lại hoặc hiển thị lỗi
                 Console.WriteLine(ex.Message);
             }
         }
 
-
-        public Product Selected
+        public async Task LoadProductById(int prodId)
         {
-            get => _selected;
-            set
+            NewProduct = await _productService.GetByIdProduct(prodId);
+
+            if (NewProduct == null)
             {
-                _selected = value;
-                OnPropertyChanged(nameof(Selected));
-                // When a student is selected, populate the fields for editing
-                if (_selected != null)
-                {
-                    NewProduct = new Product
-                    {
-                        ProdId = _selected.ProdId,
-                        ProdName = _selected.ProdName,
-                        ProdDescription = _selected.ProdDescription,
-                        ProdAmount = _selected.ProdAmount,
-                        ProdImg = _selected.ProdImg,
-                        ProdPrice = _selected.ProdPrice,
-                        CateId = _selected.CateId
-                    };
-                }
+                MessageBox.Show($"Product with ID {prodId} not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
         }
 
-        
+
         public Product NewProduct
         {
             get => _newProduct;
@@ -95,28 +71,52 @@ namespace MyWPF.ViewModel
             await _productService.AddProduct(NewProduct);
             Products.Add(NewProduct);
             NewProduct = new Product();
+            MessageBox.Show("Added product success.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            LoadProduct();
+            CloseAction?.Invoke();
         }
-
 
         private async void UpdateProduct()
         {
-            if (Selected != null)
+            if (NewProduct != null) 
             {
-                await _productService.UpdateProduct(NewProduct);
-                var index = Products.IndexOf(Selected);
-                Products[index] = NewProduct;
+                var result = MessageBox.Show($"Do you want to update \"{NewProduct.ProdName}\"?",
+                                             "Confirm update!",
+                                             MessageBoxButton.YesNo,
+                                             MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    await _productService.UpdateProduct(NewProduct);
+                    var index = Products.IndexOf(NewProduct);
+                    if (index >= 0)
+                    {
+                        Products[index] = NewProduct;
+                    }
+                    LoadProduct();
+                }
             }
+            else
+            {
+                MessageBox.Show("Product not found."); // Thông báo nếu không tìm thấy sản phẩm
+            }
+            CloseAction?.Invoke();
         }
 
-        private async void DeleteProduct()
+        private async void DeleteProduct(int prodId)
         {
-            if (Selected != null)
+            if (NewProduct != null)
             {
-                await _productService.DeleteProduct(Selected.ProdId);
-                Products.Remove(Selected);
-                Selected = null;
+                var result = MessageBox.Show($"Do you want to delete \"{NewProduct.ProdName}\"?",
+                                             "Confirm delete!",
+                                             MessageBoxButton.YesNo,
+                                             MessageBoxImage.Warning);
+                if (result == MessageBoxResult.Yes)
+                {
+                    await _productService.DeleteProduct(prodId);
+                    Products.Remove(NewProduct);
+                    LoadProduct();
+                }
             }
         }
-
     }
 }
