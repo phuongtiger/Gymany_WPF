@@ -59,6 +59,16 @@
             <!-- Apply the RowStyle here -->
 
             <DataGrid.Columns>
+                <!-- Product Image Column -->
+                <DataGridTemplateColumn Header="Image" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding ProdImg}" 
+           Width="100" Height="100" Stretch="Uniform" />
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
                 <!-- Product Name Column -->
                 <DataGridTextColumn Header="Name" Binding="{Binding ProdName}" Width="*"/>
 
@@ -70,16 +80,6 @@
 
                 <!-- Product Price Column -->
                 <DataGridTextColumn Header="Price" Binding="{Binding ProdPrice, StringFormat=C}" Width="Auto"/>
-
-                <!-- Product Image Column -->
-                <DataGridTemplateColumn Header="Image" Width="Auto">
-                    <DataGridTemplateColumn.CellTemplate>
-                        <DataTemplate>
-                            <Image Source="{Binding ProdImg}" 
-                           Width="100" Height="100" Stretch="Uniform" />
-                        </DataTemplate>
-                    </DataGridTemplateColumn.CellTemplate>
-                </DataGridTemplateColumn>
 
                 <!-- Category ID Column -->
                 <DataGridTextColumn Header="Category" Binding="{Binding CateId}" Width="Auto"/>

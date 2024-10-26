@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Collections.ObjectModel;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using System.Collections.ObjectModel;
 using BussinessLogic.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using System.Windows.Input;
@@ -11,6 +6,7 @@ using System.Windows;
 using Model;
 using GalaSoft.MvvmLight.CommandWpf;
 using BussinessLogic.Service;
+
 
 namespace MyWPF.ViewModel
 {
@@ -23,6 +19,8 @@ namespace MyWPF.ViewModel
         public ICommand AddCommand { get; private set; }
         public ICommand UpdateCommand { get; private set; }
         public ICommand DeleteCommand { get; }
+        public ImageHelper ImageHelper { get; set; }
+        public ICommand BrowseImageCommand { get; }
         public Action CloseAction { get; set; }
         public CategoryViewModel()
         {
@@ -31,6 +29,18 @@ namespace MyWPF.ViewModel
             AddCommand = new RelayCommand(AddCategory);
             UpdateCommand = new RelayCommand(UpdateCategory);
             DeleteCommand = new RelayCommand<int>(DeleteCategory);
+            ImageHelper = new ImageHelper();
+            BrowseImageCommand = new RelayCommand(BrowseImage);
+        }
+
+        private void BrowseImage()
+        {
+            string selectedImagePath = ImageHelper.BrowseImage();
+
+            if (!string.IsNullOrEmpty(selectedImagePath))
+            {
+                NewCategory.CateImg = selectedImagePath;
+            }
         }
 
         private async Task LoadCategory()
@@ -53,6 +63,19 @@ namespace MyWPF.ViewModel
             }
         }
 
+        public async Task LoadCategoryById(int prodId)
+        {
+            NewCategory = await _categoryService.GetByIdCategory(prodId);
+
+            if (NewCategory == null)
+            {
+                MessageBox.Show($"Category with ID {prodId} not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+            else if (!string.IsNullOrEmpty(NewCategory.CateImg))
+            {
+                ImageHelper.ImageSource = ImageHelper.LoadImage(NewCategory.CateImg);
+            }
+        }
         public Category NewCategory
         {
             get => _newCategory;
@@ -68,6 +91,8 @@ namespace MyWPF.ViewModel
             await _categoryService.AddCategory(NewCategory);
             Categories.Add(NewCategory);
             NewCategory = new Category();
+            MessageBox.Show("Added category success.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+            CloseAction?.Invoke();
         }
 
 
@@ -113,5 +138,6 @@ namespace MyWPF.ViewModel
                 }
             }
         }
+
     }
 }

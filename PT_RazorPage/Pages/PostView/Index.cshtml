@@ -1,0 +1,72 @@
+﻿@page
+@model PT_RazorPage.Pages.PostView.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].PostDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].PostContent)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].PostTitle)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].PostImg)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Admin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Cus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Post[0].Pt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.Post) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostContent)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostTitle)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.PostImg)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Admin.AdminEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cus.CusEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pt.PtEmail)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.PostId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.PostId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

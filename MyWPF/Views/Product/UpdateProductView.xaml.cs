@@ -17,7 +17,6 @@ namespace MyWPF.Views.Product
             categoryViewModel = new CategoryViewModel();
             _ = productViewModel.LoadProductById(prodId);
             this.DataContext = this;
-           
         }
 
         private void CancelButton_Click(object sender, RoutedEventArgs e)

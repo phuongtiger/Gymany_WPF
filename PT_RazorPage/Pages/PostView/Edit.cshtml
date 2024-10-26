@@ -1,0 +1,65 @@
+﻿@page
+@model PT_RazorPage.Pages.PostView.EditModel
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+<h1>Edit</h1>
+
+<h4>Post</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form method="post">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="Post.PostId" />
+            <div class="form-group">
+                <label asp-for="Post.PostDate" class="control-label"></label>
+                <input asp-for="Post.PostDate" class="form-control" />
+                <span asp-validation-for="Post.PostDate" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.PostContent" class="control-label"></label>
+                <input asp-for="Post.PostContent" class="form-control" />
+                <span asp-validation-for="Post.PostContent" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.PostTitle" class="control-label"></label>
+                <input asp-for="Post.PostTitle" class="form-control" />
+                <span asp-validation-for="Post.PostTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.PostImg" class="control-label"></label>
+                <input asp-for="Post.PostImg" class="form-control" />
+                <span asp-validation-for="Post.PostImg" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.PtId" class="control-label"></label>
+                <select asp-for="Post.PtId" class="form-control" asp-items="ViewBag.PtId"></select>
+                <span asp-validation-for="Post.PtId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.CusId" class="control-label"></label>
+                <select asp-for="Post.CusId" class="form-control" asp-items="ViewBag.CusId"></select>
+                <span asp-validation-for="Post.CusId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Post.AdminId" class="control-label"></label>
+                <select asp-for="Post.AdminId" class="form-control" asp-items="ViewBag.AdminId"></select>
+                <span asp-validation-for="Post.AdminId" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+<div>
+    <a asp-page="./Index">Back to List</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

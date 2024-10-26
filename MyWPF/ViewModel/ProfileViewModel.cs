@@ -1,10 +1,7 @@
-﻿
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Input;
 using BussinessLogic.Interface;
-using BussinessLogic.Service;
 using Microsoft.Extensions.DependencyInjection;
-using Model;
 
 namespace MyWPF.ViewModel
 {

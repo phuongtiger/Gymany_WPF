@@ -37,7 +37,7 @@
         </Button>
 
         <!--Page Title-->
-        <TextBlock Text="Caterogys" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
+        <TextBlock Text="Categories" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
 
         <!--Add Button-->
         <Button Style="{StaticResource addButton}" Click="AddCategory_Click">
@@ -78,28 +78,24 @@
            Style="{DynamicResource DataGridStyle1}" 
            RowStyle="{StaticResource DataGridRowStyle1}">
             <DataGrid.Columns>
-                <!-- Caterogy ID Column -->
-                <DataGridTextColumn Header="ID" Binding="{Binding CateId}" IsReadOnly="True" Width="Auto"/>
-
-                <!-- Caterogy Name Column -->
-                <DataGridTextColumn Header="Type" Binding="{Binding CateType}" Width="*"/>
-
-                <!-- Caterogy Description Column -->
-                <DataGridTextColumn Header="Description" Binding="{Binding CateDescription}" Width="*"/>
 
                 <!-- Caterogy Image Column -->
                 <DataGridTemplateColumn Header="Image" Width="Auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <Image Source="{Binding CateImg}" 
-                            Width="100" Height="100" Stretch="Uniform" />
+            Width="100" Height="100" Stretch="Uniform" />
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                
+                <!-- Caterogy Name Column -->
+                <DataGridTextColumn Header="Type" Binding="{Binding CateType}" Width="*"/>
 
+                <!-- Caterogy Description Column -->
+                <DataGridTextColumn Header="Description" Binding="{Binding CateDescription}" Width="*"/>
 
-                <!-- Category ID Column -->
-                <DataGridTextColumn Header="Category" Binding="{Binding CateId}" Width="Auto"/>
+                
 
                 <!-- Operations Column with Edit/Delete Buttons -->
                 <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
@@ -107,7 +103,7 @@
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
                                 <!-- Edit Button -->
-                                <Button Style="{StaticResource gridEditButton}" Command="{Binding DataContext.EditCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" CommandParameter="{Binding UpdateCommand}">
+                                <Button Style="{StaticResource gridEditButton}" Click="UpdateCategory_Click" CommandParameter="{Binding CateId}">
                                     <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
                                 </Button>
 

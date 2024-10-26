@@ -62,19 +62,18 @@ RowStyle="{StaticResource DataGridRowStyle1}">
             <!-- Apply the RowStyle here -->
 
             <DataGrid.Columns>
-                <DataGridTextColumn Header="Order ID" Binding="{Binding OrderId}" Width="Auto"/>
-
+               
                 <!-- Customer ID -->
-                <DataGridTextColumn Header="Customer ID" Binding="{Binding CusId}" Width="Auto"/>
+                <DataGridTextColumn Header="Customer" Binding="{Binding Cus.CusName}" Width="Auto"/>
 
                 <!-- Product ID -->
-                <DataGridTextColumn Header="Product Name"  Binding="{Binding Prod.ProdName}" Width="Auto"/>
+                <DataGridTextColumn Header="Product"  Binding="{Binding Prod.ProdName}" Width="Auto"/>
 
                 <!-- Order Status -->
-                <DataGridTextColumn Header="Order Status" Binding="{Binding OrderStatus}" Width="Auto"/>
+                <DataGridTextColumn Header="Status" Binding="{Binding OrderStatus}" Width="Auto"/>
 
                 <!-- Order Start Date -->
-                <DataGridTextColumn Header="Order Start Date" Binding="{Binding OrderStartDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="Auto"/>
+                <DataGridTextColumn Header="Start Date" Binding="{Binding OrderStartDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="Auto"/>
 
                 <!-- Order Total Price -->
                 <DataGridTextColumn Header="Total Price" Binding="{Binding OrderTotalPrice, StringFormat=C}" Width="Auto"/>

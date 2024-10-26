@@ -5,9 +5,6 @@ using MyWPF.Views.Product;
 
 namespace MyWPF
 {
-    /// <summary>
-    /// Interaction logic for ProductView.xaml
-    /// </summary>
     public partial class ProductView : Page
     {
         ProductViewModel productViewModel;

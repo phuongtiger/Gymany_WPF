@@ -5,11 +5,22 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyWPF.Views.Product"
         mc:Ignorable="d"
-        Title="Add New Product" Height="430" Width="715"
+        Title="Add New Product" Height="625" Width="715"
         WindowStartupLocation="CenterScreen">
 
     <Grid Margin="10">
         <StackPanel>
+
+            <Ellipse Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,10"
+                Stroke="Black" StrokeThickness="1">
+                <!-- Thêm viền đen với độ dày 3 -->
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding productViewModel.ImageHelper.ImageSource}" Stretch="UniformToFill"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Button Content="Upload Image" Background="#7B5CD6" Foreground="white" Width="100" Command="{Binding productViewModel.BrowseImageCommand}"/>
+
+
             <TextBlock Text="Product Name" Margin="0,0,0,5"/>
             <TextBox Text="{Binding productViewModel.NewProduct.ProdName, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
 
@@ -25,9 +36,6 @@
             <TextBox Text="{Binding productViewModel.NewProduct.ProdPrice, UpdateSourceTrigger=PropertyChanged}" 
                       Margin="0,0,0,10"/>
 
-            <TextBlock Text="Image Path" Margin="0,0,0,5"/>
-            <TextBox Text="{Binding productViewModel.NewProduct.ProdImg, UpdateSourceTrigger=PropertyChanged}" 
-                      Margin="0,0,0,10"/>
 
             <TextBlock Text="Category Type" Margin="0,0,0,5"/>
             <ComboBox ItemsSource="{Binding categoryViewModel.Categories}" 

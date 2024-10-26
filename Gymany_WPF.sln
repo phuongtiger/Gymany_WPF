@@ -18,6 +18,8 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Resources", "Resources", "{
 		..\..\..\Downloads\z5914412774073_207f4b587c53eef1923234207b443a93.jpg = ..\..\..\Downloads\z5914412774073_207f4b587c53eef1923234207b443a93.jpg
 	EndProjectSection
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "PT_RazorPage", "PT_RazorPage\PT_RazorPage.csproj", "{42AC10C1-BC3E-40B3-800D-C1433C42811F}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -44,6 +46,10 @@ Global
 		{D50B0EF4-3EAB-44AD-8806-4BD2FEF88A5A}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{D50B0EF4-3EAB-44AD-8806-4BD2FEF88A5A}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{D50B0EF4-3EAB-44AD-8806-4BD2FEF88A5A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{42AC10C1-BC3E-40B3-800D-C1433C42811F}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{42AC10C1-BC3E-40B3-800D-C1433C42811F}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{42AC10C1-BC3E-40B3-800D-C1433C42811F}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{42AC10C1-BC3E-40B3-800D-C1433C42811F}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -3,6 +3,11 @@ using System.Windows.Input;
 using MyWPF.ViewModel;
 using MyWPF.Views;
 using MyWPF.Views.Order;
+using MyWPF.Views.PersonalTrainer;
+using MyWPF.Views.Notification;
+using MyWPF.Views.Customer;
+using MyWPF.Views.Cart;
+using MyWPF.Views.Payment;
 
 namespace MyWPF
 {
@@ -49,12 +54,14 @@ namespace MyWPF
         }
 
         private void Profile_Click(object sender, RoutedEventArgs e) => frMain.Content = new ProfileView();
-
         private void Product_Click(object sender, RoutedEventArgs e) => frMain.Content = new ProductView();
-
         private void Category_Click(object sender, RoutedEventArgs e) => frMain.Content = new CategoryView();
-
+        private void Customer_Click(object sender, RoutedEventArgs e) => frMain.Content = new CustomerView();
         private void Order_Click(object sender, RoutedEventArgs e) => frMain.Content = new OrderView();
+        private void PersonalTrainer_Click(object sender, RoutedEventArgs e) => frMain.Content = new PersonalTrainerView();
+        private void Notification_Click(object sender, RoutedEventArgs e) => frMain.Content = new NotificationView();
+        private void Cart_Click(object sender, RoutedEventArgs e) => frMain.Content = new CartView();
+        private void Payment_Click(object sender, RoutedEventArgs e) => frMain.Content = new PaymentView();
 
 
     }

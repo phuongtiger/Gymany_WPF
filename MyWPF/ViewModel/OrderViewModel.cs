@@ -11,6 +11,8 @@ namespace MyWPF.ViewModel
     public class OrderViewModel : BaseViewModel
     {
         private readonly IOrderService _orderService;
+        private readonly IProductService _productService;
+        private readonly ICustomerService _customerService;
         public ObservableCollection<Order> Orders { get; set; } = new ObservableCollection<Order>();
         public Order _newOrder = new Order();
         //public ICommand AddOrderCommand { get; private set; }
@@ -21,60 +23,63 @@ namespace MyWPF.ViewModel
         public OrderViewModel()
         {
             _orderService = App.ServiceProvider.GetRequiredService<IOrderService>();
+            _productService = App.ServiceProvider.GetRequiredService<IProductService>();
+            _customerService = App.ServiceProvider.GetRequiredService<ICustomerService>();
+
             _ = LoadOrder();
-            Chart();
+            
             //AddOrderCommand = new RelayCommand(AddOrder);
             //UpdateOrderCommand = new RelayCommand(UpdateOrder);
             //DeleteCommand = new RelayCommand<int>(DeleteOrder);
         }
 
-        public SeriesCollection SeriesCollection { get; set; }
-        public string[] Labels { get; set; }
-        public Func<int, string> Formatter { get; set; }
+        //public SeriesCollection SeriesCollection { get; set; }
+        //public string[] Labels { get; set; }
+        //public Func<int, string> Formatter { get; set; }
 
-        void Chart()
-{
-    SeriesCollection = new SeriesCollection();
+//        void Chart()
+//{
+//    SeriesCollection = new SeriesCollection();
 
-    // Assuming you have a valid list of orders
-    Dictionary<string, int> productQuantities = new Dictionary<string, int>();
+//    // Assuming you have a valid list of orders
+//    Dictionary<string, int> productQuantities = new Dictionary<string, int>();
 
-    foreach (var item in Orders)
-    {
-        if (item.Prod != null && item.OrderQuantity > 0) // Ensure valid data
-        {
-            // Add to the productQuantities dictionary or update the quantity if the product already exists
-            if (productQuantities.ContainsKey(item.Prod.ProdName))
-            {
-                productQuantities[item.Prod.ProdName] += item.OrderQuantity;
-            }
-            else
-            {
-                productQuantities[item.Prod.ProdName] = item.OrderQuantity;
-            }
-        }
-    }
+//    foreach (var item in Orders)
+//    {
+//        if (item.Prod != null && item.OrderQuantity > 0) // Ensure valid data
+//        {
+//            // Add to the productQuantities dictionary or update the quantity if the product already exists
+//            if (productQuantities.ContainsKey(item.Prod.ProdName))
+//            {
+//                productQuantities[item.Prod.ProdName] += item.OrderQuantity;
+//            }
+//            else
+//            {
+//                productQuantities[item.Prod.ProdName] = item.OrderQuantity;
+//            }
+//        }
+//    }
 
-    // Display the content of the productQuantities dictionary in a MessageBox
-    string quantitiesDisplay = string.Join("\n", productQuantities.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
-    MessageBox.Show(quantitiesDisplay, "Product Quantities");
+//    // Display the content of the productQuantities dictionary in a MessageBox
+//    string quantitiesDisplay = string.Join("\n", productQuantities.Select(kvp => $"{kvp.Key}: {kvp.Value}"));
+//    MessageBox.Show(quantitiesDisplay, "Product Quantities");
 
-    // Add the series to the chart based on the productQuantities dictionary
-    foreach (var product in productQuantities)
-    {
-        SeriesCollection.Add(new ColumnSeries()
-        {
-            Title = product.Key,
-            Values = new ChartValues<int> { product.Value }
-        });
-    }
+//    // Add the series to the chart based on the productQuantities dictionary
+//    foreach (var product in productQuantities)
+//    {
+//        SeriesCollection.Add(new ColumnSeries()
+//        {
+//            Title = product.Key,
+//            Values = new ChartValues<int> { product.Value }
+//        });
+//    }
 
-    // Set the labels for the X-axis (product names)
-    Labels = productQuantities.Keys.ToArray();
+//    // Set the labels for the X-axis (product names)
+//    Labels = productQuantities.Keys.ToArray();
 
-    // Optionally set the Formatter for better display (if needed for quantity)
-    Formatter = value => value.ToString("N0"); // Example for integer display
-}
+//    // Optionally set the Formatter for better display (if needed for quantity)
+//    Formatter = value => value.ToString("N0"); // Example for integer display
+//}
 
 
 
@@ -87,16 +92,13 @@ namespace MyWPF.ViewModel
             {
                 Orders.Clear();
                 var orders = await _orderService.GetListAllOrder();
-
                 foreach (var order in orders)
                 {
-                    // Load the product associated with each order using the ProdId
-                    order.Prod = await _orderService.GetByIdProduct(order.ProdId);
+                    order.Prod = await _productService.GetByIdProduct(order.ProdId);
+                    order.Cus = await _customerService.GetByIdCustomer(order.CusId);
                     Orders.Add(order);
                 }
 
-                // Call the Chart method to initialize the chart data
-                Chart();
             }
             catch (Exception ex)
             {

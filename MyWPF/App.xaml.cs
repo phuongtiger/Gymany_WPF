@@ -51,7 +51,30 @@ namespace MyWPF
             services.AddTransient<OrderDAO>();
             services.AddTransient<OrderViewModel>();
 
+            services.AddTransient<IPersonalTrainerService, PersonalTrainerService>();
+            services.AddTransient<IPersonalTrainerRepository, PersonalTrainerRepository>();
+            services.AddTransient<PersonalTrainerDAO>();
+            services.AddTransient<PersonalTrainerViewModel>();
 
+            services.AddTransient<INotificationService, NotificationService>();
+            services.AddTransient<INotificationsRepository, NotificationRepository>();
+            services.AddTransient<NotificationDAO>();
+            services.AddTransient<NotificationViewModel>();
+
+            services.AddTransient<ICustomerService, CustomerService>();
+            services.AddTransient<ICustomerRepository, CustomerRepository>();
+            services.AddTransient<CustomerDAO>();
+            services.AddTransient<CustomerViewModel>();
+
+            services.AddTransient<ICartService, CartService>();
+            services.AddTransient<ICartRepository, CartRepository>();
+            services.AddTransient<CartDAO>();
+            services.AddTransient<CartViewModel>();
+
+            services.AddTransient<IPaymentService, PaymentService>();
+            services.AddTransient<IPaymentRepository, PaymentRepository>();
+            services.AddTransient<PaymentDAO>();
+            services.AddTransient<PaymentViewModel>();
 
 
 

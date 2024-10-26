@@ -9,6 +9,5 @@ namespace BussinessLogic.Interface
         Task AddOrder(Order item);
         Task UpdateOrder(Order item);
         Task DeleteOrder(int id);
-        Task<Product> GetByIdProduct(int id);
     }
 }

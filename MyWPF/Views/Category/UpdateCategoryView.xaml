@@ -1,0 +1,33 @@
+﻿<Window x:Class="MyWPF.Views.Category.UpdateCategoryView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyWPF.Views.Category"
+        mc:Ignorable="d"
+        Title="UpdateCategoryView" Height="450" Width="800">
+    <Grid Margin="10">
+        <StackPanel>
+            <Ellipse Width="150" Height="150" HorizontalAlignment="Center" VerticalAlignment="Center" Margin="0,10,0,10"
+                     Stroke="Black" StrokeThickness="1">
+                <Ellipse.Fill>
+                    <ImageBrush ImageSource="{Binding categoryViewModel.ImageHelper.ImageSource}" Stretch="UniformToFill"/>
+                </Ellipse.Fill>
+            </Ellipse>
+            <Button Content="Upload Image" Background="#7B5CD6" Foreground="white" Width="100" Command="{Binding categoryViewModel.BrowseImageCommand}"/>
+
+            <TextBlock Text="Category Type" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding categoryViewModel.NewCategory.CateType, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10"/>
+
+            <TextBlock Text="Description" Margin="0,0,0,5"/>
+            <TextBox Text="{Binding categoryViewModel.NewCategory.CateDescription, UpdateSourceTrigger=PropertyChanged}" 
+          Margin="0,0,0,10" TextWrapping="Wrap" AcceptsReturn="True" Height="60"/>
+
+
+            <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">
+                <Button Content="Save" Background="#7B5CD6" Foreground="white" Width="75" Command="{Binding categoryViewModel.UpdateCommand}" Margin="0,0,5,0"/>
+                <Button Content="Cancel" Background="#7B5CD6" Foreground="white" Width="75" Click="CancelButton_Click"/>
+            </StackPanel>
+        </StackPanel>
+    </Grid>
+</Window>

@@ -8,11 +8,9 @@ namespace BussinessLogic.Service
     public class OrderService : IOrderService
     {
         private readonly IOrderRepository _orderRepository;
-        private readonly IProductRepository _productRepository;
-        public OrderService(IOrderRepository orderRepository, IProductRepository productRepository)
+        public OrderService(IOrderRepository orderRepository)
         {
             _orderRepository = orderRepository;
-            _productRepository = productRepository;
         }
 
         public async Task<IEnumerable<Order>> GetListAllOrder() => await _orderRepository.GetListAll();
@@ -20,6 +18,5 @@ namespace BussinessLogic.Service
         public async Task AddOrder(Order item) => await _orderRepository.Add(item);
         public async Task UpdateOrder(Order item) => await _orderRepository.Update(item);
         public async Task DeleteOrder(int id) => await _orderRepository.Delete(id);
-        public async Task<Product> GetByIdProduct(int id) => await _productRepository.GetById(id);
     }
 }
