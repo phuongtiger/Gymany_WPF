@@ -101,10 +101,10 @@
                                 </StackPanel>
                             </Button>
 
-                            <Button Style="{StaticResource menuButton}" Click="Cart_Click">
+                            <Button Style="{StaticResource menuButton}" Click="Post_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="ForumOutline" Style="{StaticResource menuButtonIcon}"/>
-                                    <TextBlock Text="Cart"/>
+                                    <TextBlock Text="Post"/>
                                 </StackPanel>
                             </Button>
 
