@@ -15,7 +15,7 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <div class="form-group">
                 <label asp-for="Notification.NotiDate" class="control-label"></label>
-                <input asp-for="Notification.NotiDate" class="form-control" />
+                <input asp-for="Notification.NotiDate" class="form-control" readonly/>
                 <span asp-validation-for="Notification.NotiDate" class="text-danger"></span>
             </div>
             <div class="form-group">
@@ -34,7 +34,7 @@
             </div>
             <div class="form-group">
                 <label asp-for="Notification.PtId" class="control-label"></label>
-                <select asp-for="Notification.PtId" class ="form-control" asp-items="ViewBag.PtId"></select>
+                <input asp-for="Notification.PtId" class="form-control" readonly /> <!-- Display PtId directly -->
             </div>
             <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-primary" />

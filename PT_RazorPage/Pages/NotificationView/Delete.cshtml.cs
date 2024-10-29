@@ -7,30 +7,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
 
 namespace PT_RazorPage.Pages.NotificationView
 {
     public class DeleteModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        private readonly INotificationService _notificationService;
 
-        public DeleteModel(DataAccess.GymanyDbsContext context)
+        public DeleteModel(INotificationService notificationService)
         {
-            _context = context;
+            _notificationService = notificationService;
         }
 
         [BindProperty]
         public Notification Notification { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notifications.FirstOrDefaultAsync(m => m.NotiId == id);
-
+            var notification = await _notificationService.GetByIdNotification(id);
             if (notification == null)
             {
                 return NotFound();
@@ -42,20 +42,15 @@ namespace PT_RazorPage.Pages.NotificationView
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var notification = await _context.Notifications.FindAsync(id);
-            if (notification != null)
-            {
-                Notification = notification;
-                _context.Notifications.Remove(Notification);
-                await _context.SaveChangesAsync();
-            }
+         
+            await _notificationService.DeleteNotification(id);
 
             return RedirectToPage("./Index");
         }

@@ -7,28 +7,29 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
 
 namespace PT_RazorPage.Pages.PostView
 {
     public class DetailsModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        private readonly IPostService _PostService;
 
-        public DetailsModel(DataAccess.GymanyDbsContext context)
+        public DetailsModel(IPostService postService)
         {
-            _context = context;
+            _PostService = postService;
         }
 
         public Post Post { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.FirstOrDefaultAsync(m => m.PostId == id);
+            var post = await _PostService.GetByIdPost(id);
             if (post == null)
             {
                 return NotFound();

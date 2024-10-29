@@ -7,29 +7,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
 
 namespace PT_RazorPage.Pages.PostView
 {
     public class DeleteModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        private readonly IPostService _postService;
 
-        public DeleteModel(DataAccess.GymanyDbsContext context)
+        public DeleteModel(IPostService postService)
         {
-            _context = context;
+            _postService = postService;
         }
 
         [BindProperty]
         public Post Post { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _context.Posts.FirstOrDefaultAsync(m => m.PostId == id);
+            var post = await _postService.GetByIdPost(id);
 
             if (post == null)
             {
@@ -42,20 +43,13 @@ namespace PT_RazorPage.Pages.PostView
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var post = await _context.Posts.FindAsync(id);
-            if (post != null)
-            {
-                Post = post;
-                _context.Posts.Remove(Post);
-                await _context.SaveChangesAsync();
-            }
+            await _postService.DeletePost(id);
 
             return RedirectToPage("./Index");
         }

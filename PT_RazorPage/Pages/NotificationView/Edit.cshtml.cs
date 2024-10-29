@@ -1,79 +1,78 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.Collections.ObjectModel;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
-using Microsoft.EntityFrameworkCore;
-using DataAccess;
+using BussinessLogic.Interface;
 using Model;
 
 namespace PT_RazorPage.Pages.NotificationView
 {
     public class EditModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        public ObservableCollection<Customer> Customers { get; set; }
+        private readonly INotificationService _notificationService;
+        private readonly ICustomerService _customerService;
 
-        public EditModel(DataAccess.GymanyDbsContext context)
+        public EditModel(INotificationService notificationService, ICustomerService customerService)
         {
-            _context = context;
+            _notificationService = notificationService;
+            _customerService = customerService;
+            Customers = new ObservableCollection<Customer>();
+        }
+
+        public async Task OnGetAsync(int id)
+        {
+            await LoadCustomer(); // Make sure to await the LoadCustomer method
+
+            ViewData["CusId"] = new SelectList(Customers, "CusId", "CusEmail");
+
+            if (id == 0)
+            {
+                NotFound();
+                return;
+            }
+
+            var ptId = HttpContext.Session.GetInt32("PtId");
+            Notification = await _notificationService.GetByIdNotification(id);
+            if (Notification == null)
+            {
+                NotFound();
+                return;
+            }
+
+            if (ptId.HasValue)
+            {
+                Notification.PtId = ptId.Value; // Set the PtId from session
+            }
+        }
+
+        private async Task LoadCustomer()
+        {
+            try
+            {
+                Customers.Clear();
+                var customers = await _customerService.GetListAllCustomer();
+                foreach (var customer in customers)
+                {
+                    Customers.Add(customer);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         [BindProperty]
-        public Notification Notification { get; set; } = default!;
+        public Notification Notification { get; set; } = new Notification(); // Initialize Notification
 
-        public async Task<IActionResult> OnGetAsync(int? id)
-        {
-            if (id == null)
-            {
-                return NotFound();
-            }
-
-            var notification =  await _context.Notifications.FirstOrDefaultAsync(m => m.NotiId == id);
-            if (notification == null)
-            {
-                return NotFound();
-            }
-            Notification = notification;
-           ViewData["CusId"] = new SelectList(_context.Customers, "CusId", "CusEmail");
-           ViewData["PtId"] = new SelectList(_context.PersonalTrainers, "PtId", "PtEmail");
-            return Page();
-        }
-
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(Notification).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!NotificationExists(Notification.NotiId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            
+            await _notificationService.UpdateNotification(Notification);
             return RedirectToPage("./Index");
-        }
-
-        private bool NotificationExists(int id)
-        {
-            return _context.Notifications.Any(e => e.NotiId == id);
         }
     }
 }

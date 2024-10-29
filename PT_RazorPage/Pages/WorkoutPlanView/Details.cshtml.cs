@@ -7,36 +7,35 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
-using BussinessLogic.Interface;
 
-namespace PT_RazorPage.Pages.NotificationView
+namespace PT_RazorPage.Pages.WorkoutPlanView
 {
     public class DetailsModel : PageModel
     {
-        private readonly INotificationService _notificationService;
+        private readonly DataAccess.GymanyDbsContext _context;
 
-        public DetailsModel(INotificationService notificationService)
+        public DetailsModel(DataAccess.GymanyDbsContext context)
         {
-            _notificationService = notificationService;
+            _context = context;
         }
 
-        public Notification Notification { get; set; } = default!;
+        public WorkoutPlan WorkoutPlan { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var notification = await _notificationService.GetByIdNotification(id);
-            if (notification == null)
+            var workoutplan = await _context.WorkoutPlans.FirstOrDefaultAsync(m => m.WorkoutId == id);
+            if (workoutplan == null)
             {
                 return NotFound();
             }
             else
             {
-                Notification = notification;
+                WorkoutPlan = workoutplan;
             }
             return Page();
         }

@@ -7,22 +7,60 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
+using System.Collections.ObjectModel;
+using BussinessLogic.Service;
 
 namespace PT_RazorPage.Pages.NotificationView
 {
     public class CreateModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        public ObservableCollection<Customer> Customers { get; set; }
 
-        public CreateModel(DataAccess.GymanyDbsContext context)
+        //    private readonly DataAccess.GymanyDbsContext _context;
+        private readonly INotificationService _notificationService;
+        private readonly ICustomerService _customerService;
+        public CreateModel(INotificationService service,ICustomerService customerService)
         {
-            _context = context;
+            _notificationService = service;
+            _customerService = customerService;
+            Customers = new ObservableCollection<Customer>();
+            LoadCustomer();
+        
+        }
+
+        public async Task LoadCustomer()
+        {
+            try
+            {
+                Customers.Clear();
+                var customers = await _customerService.GetListAllCustomer();
+                foreach (var customer in customers)
+                {
+                    Customers.Add(customer);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         public IActionResult OnGet()
         {
-        ViewData["CusId"] = new SelectList(_context.Customers, "CusId", "CusEmail");
-        ViewData["PtId"] = new SelectList(_context.PersonalTrainers, "PtId", "PtEmail");
+            ViewData["CusId"] = new SelectList(Customers, "CusId", "CusEmail");
+
+            Notification = new Notification
+            {
+                NotiDate = DateTime.Now, // hoặc DateTime.Today nếu chỉ cần ngày
+            
+            };
+
+            var ptId = HttpContext.Session.GetInt32("PtId");
+            if (ptId.HasValue)
+            {
+                Notification.PtId = ptId.Value; // Set the PtId from session
+            }
             return Page();
         }
 
@@ -32,13 +70,8 @@ namespace PT_RazorPage.Pages.NotificationView
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
 
-            _context.Notifications.Add(Notification);
-            await _context.SaveChangesAsync();
+            await _notificationService.AddNotification(Notification);
 
             return RedirectToPage("./Index");
         }
