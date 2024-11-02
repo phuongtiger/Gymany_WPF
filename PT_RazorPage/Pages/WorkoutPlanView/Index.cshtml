@@ -1,0 +1,84 @@
+﻿@page
+@model PT_RazorPage.Pages.WorkoutPlanView.IndexModel
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1>Index</h1>
+
+<p>
+    <a asp-page="Create">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].WorkoutName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].WorkoutStartDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].WorkoutEndDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].WorkoutDescription)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].WorkoutSession)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].WorkoutActivity)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].Cus)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].Exc)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.WorkoutPlan[0].Pt)
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+@foreach (var item in Model.WorkoutPlan) {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkoutName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkoutStartDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkoutEndDate)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkoutDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkoutSession)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.WorkoutActivity)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Cus.CusEmail)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Exc.ExcDescription)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Pt.PtEmail)
+            </td>
+            <td>
+                <a asp-page="./Edit" asp-route-id="@item.WorkoutId">Edit</a> |
+                <a asp-page="./Details" asp-route-id="@item.WorkoutId">Details</a> |
+                <a asp-page="./Delete" asp-route-id="@item.WorkoutId">Delete</a>
+            </td>
+        </tr>
+}
+    </tbody>
+</table>

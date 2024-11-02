@@ -7,36 +7,35 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
-using BussinessLogic.Interface;
 
-namespace PT_RazorPage.Pages.PostView
+namespace PT_RazorPage.Pages.WorkoutPlanView
 {
     public class DetailsModel : PageModel
     {
-        private readonly IPostService _PostService;
+        private readonly DataAccess.GymanyDbsContext _context;
 
-        public DetailsModel(IPostService postService)
+        public DetailsModel(DataAccess.GymanyDbsContext context)
         {
-            _PostService = postService;
+            _context = context;
         }
 
-        public Post Post { get; set; } = default!;
+        public WorkoutPlan WorkoutPlan { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int id)
+        public async Task<IActionResult> OnGetAsync(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var post = await _PostService.GetByIdPost(id);
-            if (post == null)
+            var workoutplan = await _context.WorkoutPlans.FirstOrDefaultAsync(m => m.WorkoutId == id);
+            if (workoutplan == null)
             {
                 return NotFound();
             }
             else
             {
-                Post = post;
+                WorkoutPlan = workoutplan;
             }
             return Page();
         }
