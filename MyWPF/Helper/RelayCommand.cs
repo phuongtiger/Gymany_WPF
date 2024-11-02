@@ -1,6 +1,4 @@
-﻿using System;
-using System.Windows.Input;
-
+﻿
 namespace MyWPF.ViewModel
 {
     using System;

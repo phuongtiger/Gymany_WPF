@@ -6,12 +6,15 @@ using System.Collections.ObjectModel;
 using System.Windows.Input;
 using System.Windows;
 using GalaSoft.MvvmLight.Command;
+using BussinessLogic.Service;
 
 namespace MyWPF.ViewModel
 {
     public class PaymentViewModel : BaseViewModel
     {
         private readonly IPaymentService _paymentService;
+        private readonly ICustomerService _customerService;
+        private readonly IProductService _productService;
         public ObservableCollection<Payment> Payments { get; set; } = new ObservableCollection<Payment>();
 
         public Payment NewPayment { get; set; } = new Payment();
@@ -25,15 +28,25 @@ namespace MyWPF.ViewModel
         public ICommand BrowseImageCommand { get; }
         public Action CloseAction { get; set; }
 
+        private readonly CustomerViewModel customerViewModel;
+        public ObservableCollection<Customer> Customers => customerViewModel.Customers;
+        private readonly ProductViewModel productViewModel;
+        public ObservableCollection<Product> Products => productViewModel.Products;
+
         public PaymentViewModel()
         {
+            customerViewModel = new CustomerViewModel();
+            customerViewModel.LoadCustomer();
+            productViewModel = new ProductViewModel();
+            productViewModel.LoadProduct();
+
             _paymentService = App.ServiceProvider.GetRequiredService<IPaymentService>();
+            _productService = App.ServiceProvider.GetRequiredService<IProductService>();
+            _customerService = App.ServiceProvider.GetRequiredService<ICustomerService>();
 
             _ = LoadPayment();
 
             AddPaymentCommand = new RelayCommand(AddPayment);
-            UpdatePaymentCommand = new RelayCommand(UpdatePayment);
-            DeletePaymentCommand = new RelayCommand<int>(DeletePayment);
             ImageHelper = new ImageHelper();
             BrowseImageCommand = new RelayCommand(BrowseImage);
         }
@@ -58,7 +71,11 @@ namespace MyWPF.ViewModel
                 var payments = await _paymentService.GetListAllPayment();
                 foreach (var payment in payments)
                 {
+                    payment.Cus = await _customerService.GetByIdCustomer(payment.CusId);
+                    payment.Prod = await _productService.GetByIdProduct(payment.ProdId);
+
                     Payments.Add(payment);
+                    
                 }
             }
             catch (Exception ex)

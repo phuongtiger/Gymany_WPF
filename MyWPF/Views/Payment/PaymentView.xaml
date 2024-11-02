@@ -6,11 +6,79 @@
       xmlns:local="clr-namespace:MyWPF.Views.Payment"
        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
       mc:Ignorable="d"
+      xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
       Background="White"
       d:DesignHeight="450" d:DesignWidth="800"
       Title="PaymentView">
 
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Page Title -->
+        <TextBlock Text="Payments" FontSize="32" FontWeight="SemiBold" Margin="20 10" Foreground="#121518" HorizontalAlignment="Left"/>
+
+        <!-- Payments Data Grid -->
+        <DataGrid ItemsSource="{Binding Payments}" 
+                  SelectedItem="{Binding SelectedPayment}" 
+                  AutoGenerateColumns="False" 
+                  CanUserAddRows="False" 
+                  Style="{DynamicResource DataGridStyle1}" 
+                  RowStyle="{StaticResource DataGridRowStyle1}" Grid.Row="1" Margin="10">
+            <DataGrid.Columns>
+                <!-- Customer Name -->
+                <DataGridTextColumn Header="Customer" Binding="{Binding Cus.CusName}" Width="Auto"/>
+
+                <!-- Product Name -->
+                <DataGridTextColumn Header="Product" Binding="{Binding Prod.ProdName}" Width="Auto"/>
+
+                <!-- Payment Date -->
+                <DataGridTextColumn Header="Date" Binding="{Binding PayDate, StringFormat=\{0:MM/dd/yyyy\}}" Width="Auto"/>
+
+                <!-- Payment Quantity -->
+                <DataGridTextColumn Header="Quantity" Binding="{Binding PayQuantity}" Width="Auto"/>
+
+                <!-- Operations Column with Edit/Delete Buttons -->
+                <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <StackPanel Orientation="Horizontal">
+                                <!-- Edit Button -->
+                                <Button Style="{StaticResource gridEditButton}" Click="Detail_Click" CommandParameter="{Binding PayId}">
+                                    <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
+                                </Button>
+
+                                <!-- Delete Button -->
+                                <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}"  
+                                        Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
+                                        CommandParameter="{Binding PayId}">
+                                    <Icon:PackIconMaterial Kind="DeleteOutline" Style="{StaticResource gridButtonIcon}"/>
+                                </Button>
+                            </StackPanel>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+
+        <!-- Pagination Section -->
+        <Border Grid.Row="2" HorizontalAlignment="Right" BorderBrush="#DEE4EC" BorderThickness="1" CornerRadius="5" Padding="5" Background="#ffffff" Margin="10">
+            <StackPanel Orientation="Horizontal">
+                <Button Style="{StaticResource pagingButton}">
+                    <Icon:PackIconMaterial Kind="ChevronLeft" Style="{StaticResource pagingButtonIcon}"/>
+                </Button>
+                <Button Style="{StaticResource pagingButton}" Content="1"/>
+                <Button Style="{StaticResource pagingButton}" Content="2" Background="#7950F2" Foreground="#ffffff"/>
+                <Button Style="{StaticResource pagingButton}" Content="3"/>
+                <TextBlock Text="..." Foreground="#6C7682" VerticalAlignment="Center" Margin="10 0" FontSize="15"/>
+                <Button Style="{StaticResource pagingButton}" Content="9"/>
+                <Button Style="{StaticResource pagingButton}">
+                    <Icon:PackIconMaterial Kind="ChevronRight" Style="{StaticResource pagingButtonIcon}"/>
+                </Button>
+            </StackPanel>
+        </Border>
     </Grid>
 </Page>

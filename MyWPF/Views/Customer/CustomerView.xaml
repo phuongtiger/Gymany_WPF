@@ -37,6 +37,16 @@
                   Style="{DynamicResource DataGridStyle1}" 
                   RowStyle="{StaticResource DataGridRowStyle1}" Grid.Row="2">
             <DataGrid.Columns>
+
+                <!-- Personal Trainer Image Column -->
+                <DataGridTemplateColumn Header="Image" Width="Auto">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <Image Source="{Binding CusImage}" Width="100" Height="100" Stretch="Uniform"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+                
                 <!-- Customer Name Column -->
                 <DataGridTextColumn Header="Name" Binding="{Binding CusName}" Width="Auto"/>
 

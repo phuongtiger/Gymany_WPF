@@ -43,7 +43,7 @@ namespace MyWPF.ViewModel
             }
         }
 
-        private async Task LoadCategory()
+        public async Task LoadCategory()
         {
             try
             {
@@ -88,11 +88,18 @@ namespace MyWPF.ViewModel
 
         private async void AddCategory()
         {
-            await _categoryService.AddCategory(NewCategory);
-            Categories.Add(NewCategory);
-            NewCategory = new Category();
-            MessageBox.Show("Added category success.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            CloseAction?.Invoke();
+            try
+            {
+                await _categoryService.AddCategory(NewCategory);
+                Categories.Add(NewCategory);
+                NewCategory = new Category();
+                MessageBox.Show("Added category success.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                CloseAction?.Invoke();
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while adding the customer", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }    
         }
 
 
