@@ -94,12 +94,14 @@
                                 </StackPanel>
                             </Button>
 
+                            <!--
                             <Button Style="{StaticResource menuButton}" Click="Notification_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="ForumOutline" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="Notification"/>
                                 </StackPanel>
                             </Button>
+                            -->
 
                             <Button Style="{StaticResource menuButton}" Click="Post_Click">
                                 <StackPanel Orientation="Horizontal">

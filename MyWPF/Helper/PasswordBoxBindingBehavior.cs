@@ -47,6 +47,8 @@ namespace MyWPF.Helper
                 if (box.DataContext is PersonalTrainerViewModel viewModel)
                 {
                     viewModel.NewPersonalTrainer.PtPassword = box.Password;
+                } else if (box.DataContext is CustomerViewModel cusViewModel){
+                    cusViewModel.NewCustomer.CusPassword = box.Password;
                 }
             }
         }

@@ -20,8 +20,14 @@ namespace MyWPF.Views.Notification
         private void AddNotification_Click(object sender, RoutedEventArgs e)
         {
             var addNotificationWindow = new AddNotificationView();
+            addNotificationWindow.Closed += Window_Closed;
             addNotificationWindow.ShowDialog();
            
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _notificationViewModel.LoadNotification();
         }
 
         private void UpdateNotification_Click(object sender, RoutedEventArgs e)

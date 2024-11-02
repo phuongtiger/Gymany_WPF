@@ -3,6 +3,7 @@ using System.Windows;
 using System.Windows.Input;
 using BussinessLogic.Interface;
 using GalaSoft.MvvmLight.Command;
+using MailChimp.Net.Models;
 using Microsoft.Extensions.DependencyInjection;
 using Model;
 
@@ -86,25 +87,44 @@ namespace MyWPF.ViewModel
             }
         }
 
+
+        private async Task<bool> CheckAccount(string username)
+        {
+            var existingCustomer = PersonalTrainers.FirstOrDefault(c => c.PtUsername == username);
+            if (existingCustomer != null)
+            {
+                MessageBox.Show("Username already exists. Please choose a different username.", "Duplicate Username", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
+
         private async void AddPersonalTrainer()
         {
-            if (!string.IsNullOrEmpty(_newImagePath))
+            if (!await CheckAccount(NewPersonalTrainer.PtName))
             {
-                NewPersonalTrainer.PtImg = _newImagePath; // Apply the new image path when saving
-            }
-
-            if (string.IsNullOrWhiteSpace(NewPersonalTrainer.PtPassword))
-            {
-                MessageBox.Show("Password is required.");
                 return;
             }
-
-            await _personalTrainerService.AddPersonalTrainer(NewPersonalTrainer);
-            PersonalTrainers.Add(NewPersonalTrainer);
-            NewPersonalTrainer = new PersonalTrainer();
-            MessageBox.Show("Added personalTrainer success.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            await LoadPersonalTrainer();
-            CloseAction?.Invoke();
+            else
+            {
+                if (!string.IsNullOrEmpty(_newImagePath))
+                {
+                    NewPersonalTrainer.PtImg = _newImagePath; // Apply the new image path when saving
+                }
+                try
+                {
+                    await _personalTrainerService.AddPersonalTrainer(NewPersonalTrainer);
+                    PersonalTrainers.Add(NewPersonalTrainer);
+                    NewPersonalTrainer = new PersonalTrainer();
+                    MessageBox.Show("Added personalTrainer success.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+                    await LoadPersonalTrainer();
+                    CloseAction?.Invoke();
+                }
+                catch (Exception ex)
+                {
+                    MessageBox.Show($"An error occurred while adding the customer", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+                }
+            }         
         }
 
         private async void UpdatePersonalTrainer()
@@ -128,7 +148,6 @@ namespace MyWPF.ViewModel
                     {
                         PersonalTrainers[index] = NewPersonalTrainer;
                     }
-                    LoadPersonalTrainer();
                 }
             }
             else

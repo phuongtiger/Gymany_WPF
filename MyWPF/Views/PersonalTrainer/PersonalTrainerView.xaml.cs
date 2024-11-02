@@ -1,19 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows;
+﻿using System.Windows;
 using System.Windows.Controls;
-using System.Windows.Data;
-using System.Windows.Documents;
-using System.Windows.Input;
-using System.Windows.Media;
-using System.Windows.Media.Imaging;
-using System.Windows.Navigation;
-using System.Windows.Shapes;
 using MyWPF.ViewModel;
-using MyWPF.Views.Product;
+
 
 namespace MyWPF.Views.PersonalTrainer
 {
@@ -33,8 +21,12 @@ namespace MyWPF.Views.PersonalTrainer
         private void AddPersonalTrainer_Click(object sender, RoutedEventArgs e)
         {
             var addPersonalTrainerWindow = new AddPersonalTrainerView();
+            addPersonalTrainerWindow.Closed += Window_Closed; // Subscribe to the Closed event
             addPersonalTrainerWindow.ShowDialog();
-            //productViewModel.LoadProduct();
+        }
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            _personalTrainerViewModel.LoadPersonalTrainer();
         }
 
         private void UpdatePersonalTrainer_Click(object sender, RoutedEventArgs e)
@@ -44,6 +36,7 @@ namespace MyWPF.Views.PersonalTrainer
             {
                 int ptId = (int)button.CommandParameter;
                 var updatePersonalTrainerView = new UpdatePersonalTrainerView(ptId);
+                updatePersonalTrainerView.Closed += Window_Closed;
                 updatePersonalTrainerView.ShowDialog();
             }
         }

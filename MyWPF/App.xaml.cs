@@ -76,7 +76,10 @@ namespace MyWPF
             services.AddTransient<PaymentDAO>();
             services.AddTransient<PaymentViewModel>();
 
-
+            services.AddTransient<IPostService, PostService>();
+            services.AddTransient<IPostRepository, PostRepository>();
+            services.AddTransient<PostDAO>();
+            services.AddTransient<PostViewModel>();
 
             //Đăng ký MainWindow
             services.AddSingleton<LoginView>();

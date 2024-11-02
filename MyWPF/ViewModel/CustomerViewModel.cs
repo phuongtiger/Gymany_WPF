@@ -13,7 +13,7 @@ namespace MyWPF.ViewModel
         private readonly ICustomerService _customerService;
         public ObservableCollection<Customer> Customers { get; set; } = new ObservableCollection<Customer>();
 
-        public Customer NewCustomer { get; set; } = new Customer();
+        public Customer _newCustomer { get; set; } = new Customer();
 
         public ICommand AddCustomerCommand { get; private set; }
         public ICommand UpdateCustomerCommand { get; private set; }
@@ -66,45 +66,106 @@ namespace MyWPF.ViewModel
             }
         }
 
-        private async void AddCustomer()
+        public async Task LoadCustomerById(int cusId)
         {
-            if (string.IsNullOrWhiteSpace(NewCustomer.CusPassword))
+            NewCustomer = await _customerService.GetByIdCustomer(cusId);
+
+            if (NewCustomer == null)
             {
-                MessageBox.Show("Password is required.");
-                return;
+                MessageBox.Show($"PersonalTrainer with ID {cusId} not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
             }
-            await _customerService.AddCustomer(NewCustomer);
-            Customers.Add(NewCustomer);
-            NewCustomer = new Customer();
-            MessageBox.Show("Added customer successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            await LoadCustomer();
-            CloseAction?.Invoke();
+            else if (!string.IsNullOrEmpty(NewCustomer.CusImage))
+            {
+                ImageHelper.ImageSource = ImageHelper.LoadImage(NewCustomer.CusImage);
+            }
+        }
+
+        private async Task<bool> CheckAccount(string username)
+        {
+            var existingCustomer = Customers.FirstOrDefault(c => c.CusUsername == username);
+            if (existingCustomer != null)
+            {
+                MessageBox.Show("Username already exists. Please choose a different username.", "Duplicate Username", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return false;
+            }
+            return true;
+        }
+
+        public Customer NewCustomer
+        {
+            get => _newCustomer;
+            set
+            {
+                _newCustomer = value;
+                OnPropertyChanged();
+            }
+        }
+
+        public async void AddCustomer()
+        {
+            // Check for duplicate username
+            if (!await CheckAccount(NewCustomer.CusUsername))
+            {
+                MessageBox.Show("Username already exists. Please choose another.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return; // Prevent further execution
+            }
+
+            if (!string.IsNullOrEmpty(_newImagePath))
+            {
+                NewCustomer.CusImage = _newImagePath; // Apply the new image path when saving
+            }
+
+            try
+            {
+                await _customerService.AddCustomer(NewCustomer);
+                Customers.Add(NewCustomer);
+                NewCustomer = new Customer(); // Reset the form
+                MessageBox.Show("Added customer successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+
+                CloseAction?.Invoke(); // Close the AddCustomerView
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show($"An error occurred while adding the customer", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
+            }
         }
 
         private async void UpdateCustomer()
         {
-            if (NewCustomer != null)
+            try
             {
-                var result = MessageBox.Show($"Do you want to update \"{NewCustomer.CusName}\"?",
-                                             "Confirm update!",
-                                             MessageBoxButton.YesNo,
-                                             MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
+                if (!string.IsNullOrEmpty(_newImagePath))
                 {
-                    await _customerService.UpdateCustomer(NewCustomer);
-                    var index = Customers.IndexOf(NewCustomer);
-                    if (index >= 0)
-                    {
-                        Customers[index] = NewCustomer;
-                    }
-                    await LoadCustomer();
+                    NewCustomer.CusImage = _newImagePath; // Apply the new image path when saving
                 }
+
+                if (NewCustomer != null)
+                {
+                    var result = MessageBox.Show($"Do you want to update \"{NewCustomer.CusName}\"?",
+                                                 "Confirm update!",
+                                                 MessageBoxButton.YesNo,
+                                                 MessageBoxImage.Warning);
+                    if (result == MessageBoxResult.Yes)
+                    {
+                        await _customerService.UpdateCustomer(NewCustomer);
+                        var index = Customers.IndexOf(NewCustomer);
+                        if (index >= 0)
+                        {
+                            Customers[index] = NewCustomer;
+                        }
+                    }
+                }
+                else
+                {
+                    MessageBox.Show("Customer not found.");
+                }
+                CloseAction?.Invoke();
             }
-            else
+            catch (Exception ex)
             {
-                MessageBox.Show("Customer not found.");
+                MessageBox.Show($"An error occurred while adding the customer", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
-            CloseAction?.Invoke();
+            
         }
 
         private async void DeleteCustomer(int notiId)

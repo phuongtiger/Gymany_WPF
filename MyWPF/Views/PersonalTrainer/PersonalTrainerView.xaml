@@ -20,10 +20,26 @@
         </Grid.RowDefinitions>
 
         <!-- Page Title -->
-        <TextBlock Text="Personal Trainers" Grid.Row="0" FontSize="32" FontWeight="SemiBold" Margin="20 10" Foreground="#121518" HorizontalAlignment="Left"/>
+        <!-- Search Textbox -->
+        <Grid Width="300" HorizontalAlignment="Left">
+            <TextBlock Margin="20 0" VerticalAlignment="Center" Foreground="#B0B9C6" IsHitTestVisible="False"
+               Panel.ZIndex="1" Text="Search here ..."/>
+        </Grid>
+
+        <!-- Top Buttons -->
+        <Button Style="{StaticResource topButton}" Margin="0 0 20 0" Background="#dcdcdc">
+            <Icon:PackIconMaterial Kind="Cog"/>
+        </Button>
+
+        <Button Style="{StaticResource topButton}" Margin="0 0 55 0">
+            <Icon:PackIconMaterial Kind="Bell"/>
+        </Button>
+
+        <!-- Page Title -->
+        <TextBlock Text="Personal Trainers" Grid.Row="1" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
 
         <!-- Add Button -->
-        <Button Grid.Row="1" HorizontalAlignment="Left" Margin="20 10" Style="{StaticResource addButton}" Click="AddPersonalTrainer_Click">
+        <Button Style="{StaticResource addButton}" Click="AddPersonalTrainer_Click">
             <StackPanel Orientation="Horizontal">
                 <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
                 <TextBlock Text="Add New Personal Trainer"/>

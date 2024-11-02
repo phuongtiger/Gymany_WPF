@@ -18,8 +18,13 @@ namespace MyWPF
         private void AddProduct_Click(object sender, RoutedEventArgs e)
         {
             var addProductWindow = new AddProductView();
+            addProductWindow.Closed += Window_Closed;
             addProductWindow.ShowDialog();
-            //productViewModel.LoadProduct();
+        }
+
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            productViewModel.LoadProduct();
         }
 
         private void UpdateProduct_Click(object sender, RoutedEventArgs e)
@@ -29,6 +34,7 @@ namespace MyWPF
             {
                 int prodId = (int)button.CommandParameter;
                 var updateProductView = new UpdateProductView(prodId);
+                updateProductView.Closed += Window_Closed;
                 updateProductView.ShowDialog();
             }
         }

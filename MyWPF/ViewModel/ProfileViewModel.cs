@@ -2,6 +2,7 @@
 using System.Windows.Input;
 using BussinessLogic.Interface;
 using Microsoft.Extensions.DependencyInjection;
+using Model;
 
 namespace MyWPF.ViewModel
 {
@@ -10,8 +11,8 @@ namespace MyWPF.ViewModel
         private readonly IAdminService _adminService;
 
         // Property to hold the selected admin
-        private Model.Admin _selectedAdmin;
-        public Model.Admin SelectedAdmin
+        private Admin _selectedAdmin;
+        public Admin SelectedAdmin
         {
             get => _selectedAdmin;
             set
@@ -30,7 +31,7 @@ namespace MyWPF.ViewModel
 
 
 
-        private async void LoadAdminByID()
+        private async Task LoadAdminByID()
         {
             // Check if the adminId exists in application properties
             if (Application.Current.Properties.Contains("adminId"))

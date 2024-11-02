@@ -38,7 +38,7 @@ namespace MyWPF.ViewModel
             _personalTrainerService = App.ServiceProvider.GetRequiredService<IPersonalTrainerService>();
             _customerService = App.ServiceProvider.GetRequiredService<ICustomerService>();
 
-            NotificationTypes = new ObservableCollection<string> { "Warning", "Alert", "Info" };
+            NotificationTypes = new ObservableCollection<string> { "alert", "danger" };
 
             LoadNotification();
 
@@ -48,7 +48,7 @@ namespace MyWPF.ViewModel
         }
 
           
-        private async Task LoadNotification()
+        public async Task LoadNotification()
         {
             try
             {
