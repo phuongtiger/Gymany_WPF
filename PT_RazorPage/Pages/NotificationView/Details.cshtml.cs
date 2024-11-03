@@ -9,18 +9,18 @@ using DataAccess;
 using Model;
 using BussinessLogic.Interface;
 
-namespace PT_RazorPage.Pages.PostView
+namespace PT_RazorPage.Pages.NotificationView
 {
     public class DetailsModel : PageModel
     {
-        private readonly IPostService _PostService;
+        private readonly INotificationService _notificationService;
 
-        public DetailsModel(IPostService postService)
+        public DetailsModel(INotificationService notificationService)
         {
-            _PostService = postService;
+            _notificationService = notificationService;
         }
 
-        public Post Post { get; set; } = default!;
+        public Notification Notification { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -29,14 +29,14 @@ namespace PT_RazorPage.Pages.PostView
                 return NotFound();
             }
 
-            var post = await _PostService.GetByIdPost(id);
-            if (post == null)
+            var notification = await _notificationService.GetByIdNotification(id);
+            if (notification == null)
             {
                 return NotFound();
             }
             else
             {
-                Post = post;
+                Notification = notification;
             }
             return Page();
         }

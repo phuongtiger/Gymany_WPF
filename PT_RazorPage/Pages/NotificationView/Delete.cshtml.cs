@@ -9,19 +9,19 @@ using DataAccess;
 using Model;
 using BussinessLogic.Interface;
 
-namespace PT_RazorPage.Pages.PostView
+namespace PT_RazorPage.Pages.NotificationView
 {
     public class DeleteModel : PageModel
     {
-        private readonly IPostService _postService;
+        private readonly INotificationService _notificationService;
 
-        public DeleteModel(IPostService postService)
+        public DeleteModel(INotificationService notificationService)
         {
-            _postService = postService;
+            _notificationService = notificationService;
         }
 
         [BindProperty]
-        public Post Post { get; set; } = default!;
+        public Notification Notification { get; set; } = default!;
 
         public async Task<IActionResult> OnGetAsync(int id)
         {
@@ -30,15 +30,14 @@ namespace PT_RazorPage.Pages.PostView
                 return NotFound();
             }
 
-            var post = await _postService.GetByIdPost(id);
-
-            if (post == null)
+            var notification = await _notificationService.GetByIdNotification(id);
+            if (notification == null)
             {
                 return NotFound();
             }
             else
             {
-                Post = post;
+                Notification = notification;
             }
             return Page();
         }
@@ -49,7 +48,9 @@ namespace PT_RazorPage.Pages.PostView
             {
                 return NotFound();
             }
-            await _postService.DeletePost(id);
+
+         
+            await _notificationService.DeleteNotification(id);
 
             return RedirectToPage("./Index");
         }
