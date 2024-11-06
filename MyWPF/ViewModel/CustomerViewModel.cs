@@ -5,6 +5,7 @@ using Model;
 using System.Windows.Input;
 using System.Windows;
 using GalaSoft.MvvmLight.Command;
+using BussinessLogic.Service;
 
 namespace MyWPF.ViewModel
 {
@@ -80,17 +81,6 @@ namespace MyWPF.ViewModel
             }
         }
 
-        private async Task<bool> CheckAccount(string username)
-        {
-            var existingCustomer = Customers.FirstOrDefault(c => c.CusUsername == username);
-            if (existingCustomer != null)
-            {
-                MessageBox.Show("Username already exists. Please choose a different username.", "Duplicate Username", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
-            }
-            return true;
-        }
-
         public Customer NewCustomer
         {
             get => _newCustomer;
@@ -101,18 +91,31 @@ namespace MyWPF.ViewModel
             }
         }
 
+        private async Task<bool> CheckAccount(string username)
+        {
+            var existingCustomer = await _customerService.GetByUsernameCustomer(username);
+
+            if (existingCustomer != null)
+            {
+                if (existingCustomer.CusUsername == username)
+                {
+                    MessageBox.Show($"Username {existingCustomer.CusUsername} already exists. Please choose a different username.", "Duplicate Username", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
+            }
+            return true;
+        }
+
         public async void AddCustomer()
         {
-            // Check for duplicate username
             if (!await CheckAccount(NewCustomer.CusUsername))
             {
-                MessageBox.Show("Username already exists. Please choose another.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return; // Prevent further execution
+                return; 
             }
 
             if (!string.IsNullOrEmpty(_newImagePath))
             {
-                NewCustomer.CusImage = _newImagePath; // Apply the new image path when saving
+                NewCustomer.CusImage = _newImagePath; 
             }
 
             try
@@ -179,7 +182,6 @@ namespace MyWPF.ViewModel
                 if (result == MessageBoxResult.Yes)
                 {
                     await _customerService.DeleteCustomer(notiId);
-                    Customers.Remove(NewCustomer);
                     await LoadCustomer();
                 }
             }

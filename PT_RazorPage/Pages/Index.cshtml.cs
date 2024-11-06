@@ -1,20 +1,42 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
+using Microsoft.EntityFrameworkCore;
+using DataAccess; // Ensure this namespace is correct
+using Model;
+using BussinessLogic.Interface; // Ensure your model namespace
 
-namespace PT_RazorPage.Pages
+public class IndexModel : PageModel
 {
-    public class IndexModel : PageModel
+    private readonly IPersonalTrainerService _service;
+
+    public IndexModel(IPersonalTrainerService service)
     {
-        private readonly ILogger<IndexModel> _logger;
+        _service = service;
+    }
 
-        public IndexModel(ILogger<IndexModel> logger)
+    public PersonalTrainer PersonalTrainer { get; set; } = new PersonalTrainer();
+
+    public async Task<IActionResult> OnGetAsync()
+    {
+        int ptId = (int)HttpContext.Session.GetInt32("PtId");
+
+        // Retrieve Personal Trainer details from the database
+        PersonalTrainer = await _service.GetByIdPersonalTrainer(ptId);
+
+        if (PersonalTrainer == null)
         {
-            _logger = logger;
+            return NotFound("Personal Trainer not found.");
         }
 
-        public void OnGet()
-        {
+        return Page();
+    }
 
-        }
+    public IActionResult OnPostLogout()
+    {
+        // Clear the session
+        HttpContext.Session.Remove("PtId");
+
+        // Redirect to the login page
+        return RedirectToPage("/Login");
     }
 }

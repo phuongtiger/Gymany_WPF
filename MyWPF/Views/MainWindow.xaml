@@ -6,7 +6,7 @@
         xmlns:local="clr-namespace:MyWPF"
         xmlns:Icon="http://metro.mahapps.com/winfx/xaml/iconpacks"
         mc:Ignorable="d"
-        Title="MainWindow" Height="635" Width="800" WindowState="Maximized">
+        Title="MainWindow" Height="733" Width="800" WindowState="Maximized">
 
     <Border CornerRadius="30" Background="#EFF2F7" MouseDown="Border_MouseDown" MouseLeftButtonDown="Border_MouseLeftButtonDown">
         <Grid>
@@ -94,14 +94,12 @@
                                 </StackPanel>
                             </Button>
 
-                            <!--
                             <Button Style="{StaticResource menuButton}" Click="Notification_Click">
                                 <StackPanel Orientation="Horizontal">
                                     <Icon:PackIconMaterial Kind="ForumOutline" Style="{StaticResource menuButtonIcon}"/>
                                     <TextBlock Text="Notification"/>
                                 </StackPanel>
                             </Button>
-                            -->
 
                             <Button Style="{StaticResource menuButton}" Click="Post_Click">
                                 <StackPanel Orientation="Horizontal">
@@ -119,12 +117,13 @@
                         </StackPanel>
 
                         <!-- Logout Button -->
-                        <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20">
+                        <Button Style="{StaticResource menuButton}" VerticalAlignment="Bottom" DockPanel.Dock="Bottom" Margin="15 0 15 20" Click="Logout_Click">
                             <StackPanel Orientation="Horizontal">
                                 <Icon:PackIconMaterial Kind="Logout" Style="{StaticResource menuButtonIcon}"/>
                                 <TextBlock Text="Logout"/>
                             </StackPanel>
                         </Button>
+
                     </DockPanel>
                 </Border>
             </Grid>

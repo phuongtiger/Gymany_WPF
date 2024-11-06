@@ -17,5 +17,6 @@ namespace BussinessLogic.Service
         public async Task AddPost(Post item) => await _repository.Add(item);
         public async Task UpdatePost(Post item) => await _repository.Update(item);
         public async Task DeletePost(int id) => await _repository.Delete(id);
+        public async Task<IList<Post>> GetListPostByPt(int ptId) => await _repository.GetListPostByPt(ptId);
     }
 }

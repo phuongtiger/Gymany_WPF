@@ -17,6 +17,15 @@ namespace DataAccess.DAOs
             if (item == null) return null;
             return item;
         }
+        public async Task<PersonalTrainer?> GetByUsername(string username)
+        {
+            var item = await _context.PersonalTrainers
+                                     .FirstOrDefaultAsync(pt => pt.PtUsername == username);
+            if (item == null) return null;
+            return item;
+        }
+
+
 
 
         public async Task Add(PersonalTrainer item)

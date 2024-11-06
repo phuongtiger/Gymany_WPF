@@ -2,7 +2,7 @@
 @model PT_RazorPage.Pages.WorkoutPlanView.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Workout Plan Table";
 }
 
 <h1>Index</h1>
@@ -32,14 +32,9 @@
                 @Html.DisplayNameFor(model => model.WorkoutPlan[0].WorkoutActivity)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.WorkoutPlan[0].Cus)
+                Customer Name
             </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutPlan[0].Exc)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.WorkoutPlan[0].Pt)
-            </th>
+       
             <th></th>
         </tr>
     </thead>
@@ -65,13 +60,7 @@
                 @Html.DisplayFor(modelItem => item.WorkoutActivity)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cus.CusEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Exc.ExcDescription)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pt.PtEmail)
+                @Html.DisplayFor(modelItem => item.Cus.CusName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.WorkoutId">Edit</a> |

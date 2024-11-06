@@ -14,5 +14,6 @@ namespace BussinessLogic.Interface
         Task AddPost(Post item);
         Task UpdatePost(Post item);
         Task DeletePost(int id);
+        Task<IList<Post>> GetListPostByPt(int ptId);
     }
 }

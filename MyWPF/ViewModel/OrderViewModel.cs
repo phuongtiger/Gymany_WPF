@@ -16,9 +16,7 @@ namespace MyWPF.ViewModel
         private readonly ICustomerService _customerService;
         public ObservableCollection<Order> Orders { get; set; } = new ObservableCollection<Order>();
         public Order _newOrder = new Order();
-        //public ICommand AddOrderCommand { get; private set; }
         public ICommand UpdateOrderCommand { get; private set; }
-        public ICommand DeleteOrderCommand { get; private set; }
         public Action CloseAction { get; set; }
 
         public OrderViewModel()
@@ -29,9 +27,7 @@ namespace MyWPF.ViewModel
 
             _ = LoadOrder();
 
-            //AddOrderCommand = new RelayCommand(AddOrder);
             UpdateOrderCommand = new RelayCommand(UpdateOrder);
-            DeleteOrderCommand = new RelayCommand(DeleteOrder);
         }
 
         public async Task LoadOrder()
@@ -77,112 +73,39 @@ namespace MyWPF.ViewModel
             }
         }
 
-        //private async void AddOrder()
-        //{
-        //    await _orderService.AddOrder(NewOrder);
-        //    Orders.Add(NewOrder);
-        //    NewOrder = new Order();
-        //    MessageBox.Show("Added order success.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        //    LoadOrder();
-        //    CloseAction?.Invoke();
-        //}
-
         private async void UpdateOrder()
         {
             if (NewOrder != null)
             {
-                var result = MessageBox.Show($"Do you want to update status to PENDING",
+                var result = MessageBox.Show("Click 'YES' to accept order, 'No' to reject order?",
                                              "Confirm update!",
-                                             MessageBoxButton.YesNo,
-                                             MessageBoxImage.Warning);
+                                             MessageBoxButton.YesNoCancel,
+                                             MessageBoxImage.Question);
+
                 if (result == MessageBoxResult.Yes)
                 {
-                    
-                    if (NewOrder.OrderStatus == "Waiting")
-                    {
-                        NewOrder.OrderStatus = "Pending"; 
-                    }
-
-                    await _orderService.UpdateOrder(NewOrder);
-
-                    var index = Orders.IndexOf(Orders.FirstOrDefault(o => o.OrderId == NewOrder.OrderId));
-                    if (index >= 0)
-                    {
-                        // Update properties of the existing order instead of replacing it
-                        var existingOrder = Orders[index];
-                        existingOrder.OrderStatus = NewOrder.OrderStatus; // Ensure these properties trigger notifications
-                        existingOrder.OrderTotalPrice = NewOrder.OrderTotalPrice;
-                        existingOrder.OrderQuantity = NewOrder.OrderQuantity;
-                        existingOrder.OrderStartDate = NewOrder.OrderStartDate;
-                    }
-
-                    await LoadOrder(); 
+                    NewOrder.OrderStatus = "Accepted";
                 }
+                else if (result == MessageBoxResult.No)
+                {
+                    NewOrder.OrderStatus = "Rejected";
+                }
+                else
+                {
+                    return;
+                }
+                await _orderService.UpdateOrder(NewOrder);
+                MessageBox.Show($"Order status updated to {NewOrder.OrderStatus}.",
+                                "Update Success",
+                                MessageBoxButton.OK,
+                                MessageBoxImage.Information);
+                CloseAction?.Invoke();
             }
             else
             {
-                MessageBox.Show("Order not found.");
+                // Nếu không tìm thấy đơn hàng, hiển thị thông báo lỗi
+                MessageBox.Show("Order not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
             }
         }
-
-
-        private async void DeleteOrder()
-        {
-            if (NewOrder != null)
-            {
-                var result = MessageBox.Show($"Do you want to update status to REJECTED",
-                                             "Confirm update!",
-                                             MessageBoxButton.YesNo,
-                                             MessageBoxImage.Warning);
-                if (result == MessageBoxResult.Yes)
-                {
-                    // Change status from "Waiting" to "Pending"
-                    if (NewOrder.OrderStatus == "Waiting")
-                    {
-                        NewOrder.OrderStatus = "Rejected"; // Update the status
-                    }
-
-                    await _orderService.UpdateOrder(NewOrder);
-
-                    var index = Orders.IndexOf(Orders.FirstOrDefault(o => o.OrderId == NewOrder.OrderId));
-                    if (index >= 0)
-                    {
-     
-                        var existingOrder = Orders[index];
-                        existingOrder.OrderStatus = NewOrder.OrderStatus;
-                        existingOrder.OrderTotalPrice = NewOrder.OrderTotalPrice;
-                        existingOrder.OrderQuantity = NewOrder.OrderQuantity;
-                        existingOrder.OrderStartDate = NewOrder.OrderStartDate;
-                    }
-
-                    await LoadOrder(); // Await the method to ensure it completes
-                }
-            }
-            else
-            {
-                MessageBox.Show("Order not found."); // Inform if the order is not found
-            }
-        }
-
-
-
-        
-
-        //private async void DeleteOrder(int prodId)
-        //{
-        //    if (NewOrder != null)
-        //    {
-        //        var result = MessageBox.Show($"Do you want to delete \"{NewOrder.OrderId}\"?",
-        //                                     "Confirm delete!",
-        //                                     MessageBoxButton.YesNo,
-        //                                     MessageBoxImage.Warning);
-        //        if (result == MessageBoxResult.Yes)
-        //        {
-        //            await _orderService.DeleteOrder(prodId);
-        //            Orders.Remove(NewOrder);
-        //            LoadOrder();
-        //        }
-        //    }
-        //}
     }
 }

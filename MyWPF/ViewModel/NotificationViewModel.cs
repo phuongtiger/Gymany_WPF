@@ -2,6 +2,7 @@
 using System.Windows;
 using System.Windows.Input;
 using BussinessLogic.Interface;
+using BussinessLogic.Service;
 using GalaSoft.MvvmLight.Command;
 using Microsoft.Extensions.DependencyInjection;
 using Model;
@@ -15,16 +16,16 @@ namespace MyWPF.ViewModel
         private readonly ICustomerService _customerService;
 
         public ObservableCollection<Notification> Notifications { get; set; } = new ObservableCollection<Notification>();
-        public Notification NewNotification { get; set; } = new Notification();
+        public Notification _newNotification { get; set; } = new Notification();
         public ObservableCollection<string> NotificationTypes { get; set; }
-
-        public ICommand AddNotificationCommand { get; private set; }
+        //public ICommand AddNotificationCommand { get; private set; }
         public ICommand UpdateNotificationCommand { get; private set; }
         public ICommand DeleteNotificationCommand { get; private set; }
         public Action CloseAction { get; set; }
 
         private readonly CustomerViewModel customerViewModel;
         public ObservableCollection<Customer> Customers => customerViewModel.Customers;
+
         private readonly PersonalTrainerViewModel personalTrainerViewModel;
         public ObservableCollection<PersonalTrainer> PersonalTrainers => personalTrainerViewModel.PersonalTrainers;
         public NotificationViewModel()
@@ -42,12 +43,21 @@ namespace MyWPF.ViewModel
 
             LoadNotification();
 
-            AddNotificationCommand = new RelayCommand(AddNotification);
+            //AddNotificationCommand = new RelayCommand(AddNotification);
             UpdateNotificationCommand = new RelayCommand(UpdateNotification);
             DeleteNotificationCommand = new RelayCommand<int>(DeleteNotification);
         }
 
-          
+        public Notification NewNotification
+        {
+            get => _newNotification;
+            set
+            {
+                _newNotification = value;
+                OnPropertyChanged();
+            }
+        }
+
         public async Task LoadNotification()
         {
             try
@@ -65,35 +75,42 @@ namespace MyWPF.ViewModel
             {
                 Console.WriteLine(ex.Message);
             }
-        } 
-
-        private async void AddNotification()
-        {
-            await _notificationService.AddNotification(NewNotification);
-            Notifications.Add(NewNotification);
-            NewNotification = new Notification();
-            MessageBox.Show("Added notification successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-            await LoadNotification();
-            CloseAction?.Invoke();
         }
+
+        public async Task LoadNotificationById(int notiId)
+        {
+            NewNotification = await _notificationService.GetByIdNotification(notiId);
+
+            if (NewNotification == null)
+            {
+                MessageBox.Show($"Notification not found.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+            }
+        }
+
+        //private async void AddNotification()
+        //{
+        //    NewNotification.NotiDate = DateTime.Now;
+        //    NewNotification.CusId = 9999;
+        //    NewNotification.PtId = 1;
+        //    await _notificationService.AddNotification(NewNotification);
+        //    Notifications.Add(NewNotification);
+        //    NewNotification = new Notification();
+        //    MessageBox.Show("Added notification successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
+        //    await LoadNotification();
+        //    CloseAction?.Invoke();
+        //}
 
         private async void UpdateNotification()
         {
             if (NewNotification != null)
             {
-                var result = MessageBox.Show($"Do you want to update \"{NewNotification.NotiType}\"?",
+                var result = MessageBox.Show($"Do you want to update this notification?",
                                              "Confirm update!",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
                     await _notificationService.UpdateNotification(NewNotification);
-                    var index = Notifications.IndexOf(NewNotification);
-                    if (index >= 0)
-                    {
-                        Notifications[index] = NewNotification;
-                    }
-                    await LoadNotification();
                 }
             }
             else
@@ -107,7 +124,7 @@ namespace MyWPF.ViewModel
         {
             if (NewNotification != null)
             {
-                var result = MessageBox.Show($"Do you want to delete \"{NewNotification.NotiType}\"?",
+                var result = MessageBox.Show($"Do you want to delete this notification?",
                                              "Confirm delete!",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Warning);

@@ -22,5 +22,6 @@ namespace Repository
         public async Task Add(WorkoutPlan item) => await workoutPlanDAO.Add(item);
         public async Task Update(WorkoutPlan item) => await workoutPlanDAO.Update(item);
         public async Task Delete(int id) => await workoutPlanDAO.Delete(id);
+        public async Task<IList<WorkoutPlan>> GetListWorkoutPlansByPt(int ptId) => await workoutPlanDAO.GetListWorkoutPlansByPt(ptId);
     }
 }

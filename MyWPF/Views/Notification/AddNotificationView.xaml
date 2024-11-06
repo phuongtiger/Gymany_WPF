@@ -5,17 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:MyWPF.Views.Notification"
         mc:Ignorable="d"
-        Title="AddNotificationView" Height="450" Width="800">
+        Title="AddNotificationView" Height="300" Width="300">
     <Grid Margin="10">
         <StackPanel>
 
             <!-- Title -->
             <TextBlock Text="Create Notification" FontSize="20" FontWeight="Bold" HorizontalAlignment="Center" Margin="0,10,0,20"/>
 
-            <!-- Notification Date -->
-            <TextBlock Text="Notification Date" Margin="0,0,0,5"/>
-            <DatePicker SelectedDate="{Binding NewNotification.NotiDate, UpdateSourceTrigger=PropertyChanged}" Margin="0,0,0,10" />
-            
             <!-- Notification Context -->
             <TextBlock Text="Context" Margin="0,0,0,5"/>
             <TextBox Text="{Binding NewNotification.NotiContext, UpdateSourceTrigger=PropertyChanged}" 
@@ -24,10 +20,10 @@
             <!-- Notification Type ComboBox -->
             <TextBlock Text="Notification Type" Margin="0,0,0,5"/>
             <ComboBox ItemsSource="{Binding NotificationTypes}" 
-                      SelectedItem="{Binding notificationViewModel.NewNotification.NotiType, UpdateSourceTrigger=PropertyChanged}" 
+                      SelectedItem="{Binding NewNotification.NotiType, UpdateSourceTrigger=PropertyChanged}" 
                       Margin="0,0,0,10" />
 
-            <!-- Customer ComboBox -->
+            <!-- 
             <TextBlock Text="Customer" Margin="0,0,0,5"/>
             <ComboBox ItemsSource="{Binding Customers}" 
                       SelectedValue="{Binding NewNotification.CusId, UpdateSourceTrigger=PropertyChanged}" 
@@ -35,13 +31,14 @@
                       DisplayMemberPath="CusName"
                       Margin="0,0,0,10" />
 
-            <!-- Personal Trainer ComboBox -->
+            
             <TextBlock Text="Personal Trainer" Margin="0,0,0,5"/>
             <ComboBox ItemsSource="{Binding PersonalTrainers}" 
                       SelectedValue="{Binding NewNotification.PtId, UpdateSourceTrigger=PropertyChanged}" 
                       SelectedValuePath="PtId" 
                       DisplayMemberPath="PtName"
                       Margin="0,0,0,10" />
+            -->
 
             <!-- Buttons for Create and Cancel -->
             <StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,10,0,0">

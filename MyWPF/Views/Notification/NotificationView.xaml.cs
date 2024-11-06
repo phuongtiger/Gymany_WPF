@@ -17,13 +17,13 @@ namespace MyWPF.Views.Notification
             this.DataContext = this._notificationViewModel;
         }
 
-        private void AddNotification_Click(object sender, RoutedEventArgs e)
-        {
-            var addNotificationWindow = new AddNotificationView();
-            addNotificationWindow.Closed += Window_Closed;
-            addNotificationWindow.ShowDialog();
+        //private void AddNotification_Click(object sender, RoutedEventArgs e)
+        //{
+        //    var addNotificationWindow = new AddNotificationView();
+        //    addNotificationWindow.Closed += Window_Closed;
+        //    addNotificationWindow.ShowDialog();
            
-        }
+        //}
 
         private void Window_Closed(object sender, EventArgs e)
         {
@@ -35,9 +35,9 @@ namespace MyWPF.Views.Notification
             var button = sender as Button;
             if (button != null && button.CommandParameter != null)
             {
-                int prodId = (int)button.CommandParameter;
-                var updateProductView = new UpdateProductView(prodId);
-                updateProductView.ShowDialog();
+                int notiId = (int)button.CommandParameter;
+                var updateNotificationView = new UpdateNotificationView(notiId);
+                updateNotificationView.ShowDialog();
             }
         }
     }

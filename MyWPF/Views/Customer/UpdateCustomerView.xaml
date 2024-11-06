@@ -12,7 +12,7 @@
             <ColumnDefinition Width="74*"/>
         </Grid.ColumnDefinitions>
 
-        <Border Width="300" Height="750" Background="White" CornerRadius="6" Grid.Column="1">
+        <Border Width="300" Height="650" Background="White" CornerRadius="6" Grid.Column="1">
             <Border.Effect>
                 <DropShadowEffect BlurRadius="15" Direction="-90" RenderingBias="Quality" ShadowDepth="2" Color="Gray" />
             </Border.Effect>

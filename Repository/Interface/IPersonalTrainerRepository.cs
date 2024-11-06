@@ -14,5 +14,6 @@ namespace Repository.Interface
         Task Add(PersonalTrainer item);
         Task Update(PersonalTrainer item);
         Task Delete(int id);
+        Task<PersonalTrainer> GetByUsername(string username);
     }
 }

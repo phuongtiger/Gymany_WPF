@@ -14,5 +14,7 @@ namespace Repository.Interface
         Task Add(Customer item);
         Task Update(Customer item);
         Task Delete(int id);
+
+        Task<Customer> GetByUsername(string username);
     }
 }

@@ -14,5 +14,6 @@ namespace Repository.Interface
         Task Add(Notification item);
         Task Update(Notification item);
         Task Delete(int id);
+        Task<IList<Notification>> GetListNotificationByPt(int ptId);
     }
 }

@@ -21,7 +21,13 @@ namespace DataAccess.DAOs
             if (item == null) return null;
             return item;
         }
-
+        public async Task<Customer> GetByUsername(string username)
+        {
+            var item = await _context.Customers
+                                     .FirstOrDefaultAsync(pt => pt.CusUsername == username);
+            if (item == null) return null;
+            return item;
+        }
 
         public async Task Add(Customer item)
         {

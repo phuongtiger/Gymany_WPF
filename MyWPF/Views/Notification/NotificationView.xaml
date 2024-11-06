@@ -20,13 +20,13 @@
         <!-- Page Title -->
         <TextBlock Text="Notifications" FontSize="32" FontWeight="SemiBold" Margin="0 20 0 0" Foreground="#121518" HorizontalAlignment="Left"/>
 
-        <!-- Add Button -->
+        <!-- Add Button 
         <Button Style="{StaticResource addButton}" Click="AddNotification_Click" Grid.Row="1">
             <StackPanel Orientation="Horizontal">
                 <Icon:PackIconMaterial Kind="Plus" VerticalAlignment="Center" Margin="0 1 8 0" Width="11" Height="11"/>
                 <TextBlock Text="Add New Notification"/>
             </StackPanel>
-        </Button>
+        </Button> -->
 
         <!-- Notifications Data Grid -->
         <DataGrid ItemsSource="{Binding Notifications}" 
@@ -37,22 +37,20 @@
                   RowStyle="{StaticResource DataGridRowStyle1}" Grid.Row="2">
             <DataGrid.Columns>
                 <!-- Notification Date Column -->
-                <DataGridTextColumn Header="Date" Binding="{Binding NotiDate, StringFormat=d}" Width="Auto"/>
+                <DataGridTextColumn Header="Date" Binding="{Binding NotiDate, StringFormat=d}" Width="*"/>
 
                 <!-- Notification Context Column -->
-                <DataGridTextColumn Header="Context" Binding="{Binding NotiContext}" Width="*"/>
+                <DataGridTextColumn Header="Context" Binding="{Binding NotiContext}" Width="4*"/>
 
                 <!-- Notification Type Column -->
-                <DataGridTextColumn Header="Type" Binding="{Binding NotiType}" Width="Auto"/>
+                <DataGridTextColumn Header="Type" Binding="{Binding NotiType}" Width="*"/>
 
-                <!-- Customer ID Column -->
-                <DataGridTextColumn Header="Customer" Binding="{Binding Cus.CusName}" Width="Auto"/>
-
-                <!-- Personal Trainer ID Column -->
                 <DataGridTextColumn Header="Personal Trainer" Binding="{Binding Pt.PtName}" Width="Auto"/>
 
+                <DataGridTextColumn Header="Customer" Binding="{Binding Cus.CusName}" Width="Auto"/>
+                
                 <!-- Operations Column with Edit/Delete Buttons -->
-                <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
+                <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="*">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">

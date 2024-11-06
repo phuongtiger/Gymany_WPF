@@ -8,37 +8,30 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
+using DocumentFormat.OpenXml.Office2010.Excel;
 
 namespace PT_RazorPage.Pages.WorkoutPlanView
 {
     public class EditModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        private readonly IWorkoutPlanService _service;
 
-        public EditModel(DataAccess.GymanyDbsContext context)
+        public EditModel(IWorkoutPlanService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [BindProperty]
         public WorkoutPlan WorkoutPlan { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var workoutplan =  await _context.WorkoutPlans.FirstOrDefaultAsync(m => m.WorkoutId == id);
-            if (workoutplan == null)
-            {
-                return NotFound();
-            }
-            WorkoutPlan = workoutplan;
-           ViewData["CusId"] = new SelectList(_context.Customers, "CusId", "CusEmail");
-           ViewData["ExcId"] = new SelectList(_context.Exercises, "ExcId", "ExcDescription");
-           ViewData["PtId"] = new SelectList(_context.PersonalTrainers, "PtId", "PtEmail");
+            WorkoutPlan = await _service.GetByIdWorkoutPlan(id);
             return Page();
         }
 
@@ -46,35 +39,8 @@ namespace PT_RazorPage.Pages.WorkoutPlanView
         // For more information, see https://aka.ms/RazorPagesCRUD.
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.Attach(WorkoutPlan).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!WorkoutPlanExists(WorkoutPlan.WorkoutId))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
+            await _service.UpdateWorkoutPlan(WorkoutPlan);
             return RedirectToPage("./Index");
-        }
-
-        private bool WorkoutPlanExists(int id)
-        {
-            return _context.WorkoutPlans.Any(e => e.WorkoutId == id);
         }
     }
 }

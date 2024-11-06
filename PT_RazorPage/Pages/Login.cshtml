@@ -1,25 +1,77 @@
 ﻿@page
 @model PT_RazorPage.Pages.LoginModel
+
 @{
-
-    <h2>Login</h2>
-
-
-    <form method="post">
-        <div asp-validation-summary="All" class="text-danger"></div>
-
-        <div class="form-group">
-            <label asp-for="Input.Username"></label>
-            <input asp-for="Input.Username" class="form-control" required />
-            <span asp-validation-for="Input.Username" class="text-danger"></span>
-        </div>
-
-        <div class="form-group">
-            <label asp-for="Input.Password"></label>
-            <input asp-for="Input.Password" class="form-control" required type="password" />
-            <span asp-validation-for="Input.Password" class="text-danger"></span>
-        </div>
-
-        <button type="submit" class="btn btn-primary">Login</button>
-    </form>
+    Layout = null; // No layout for the login page
 }
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Login</title>
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background-image: url('/images/blogbanner.jpg'); /* Use relative path */
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-position: center;
+            height: 100vh; /* Full viewport height */
+        }
+
+        .login-container {
+            max-width: 400px;
+            padding: 30px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            border-radius: 8px;
+            background-color: rgba(255, 255, 255, 0.9); /* Slight transparency */
+        }
+
+        .login-title {
+            font-size: 1.5rem;
+            font-weight: bold;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .btn-login {
+            width: 100%;
+        }
+
+        /* Centering styles */
+        .d-flex {
+            min-height: 100vh; /* Ensure the container takes the full height of the viewport */
+        }
+    </style>
+</head>
+<body class="bg-light">
+    <div class="container d-flex justify-content-center align-items-center">
+        <div class="login-container">
+            <h2 class="login-title">Sign In to Personal Trainer</h2>
+            <form method="post">
+                <div asp-validation-summary="All" class="text-danger"></div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Username" class="font-weight-bold">Username</label>
+                    <input asp-for="Input.Username" class="form-control" required />
+                    <span asp-validation-for="Input.Username" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <label asp-for="Input.Password" class="font-weight-bold">Password</label>
+                    <input asp-for="Input.Password" class="form-control" required type="password" />
+                    <span asp-validation-for="Input.Password" class="text-danger"></span>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-login mt-3">Login</button>
+            </form>
+        </div>
+    </div>
+
+    <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

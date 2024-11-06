@@ -11,23 +11,15 @@ namespace PT_RazorPage.Pages.NotificationView
 {
     public class EditModel : PageModel
     {
-        public ObservableCollection<Customer> Customers { get; set; }
         private readonly INotificationService _notificationService;
-        private readonly ICustomerService _customerService;
 
-        public EditModel(INotificationService notificationService, ICustomerService customerService)
+        public EditModel(INotificationService notificationService)
         {
             _notificationService = notificationService;
-            _customerService = customerService;
-            Customers = new ObservableCollection<Customer>();
         }
 
         public async Task OnGetAsync(int id)
         {
-            await LoadCustomer(); // Make sure to await the LoadCustomer method
-
-            ViewData["CusId"] = new SelectList(Customers, "CusId", "CusEmail");
-
             if (id == 0)
             {
                 NotFound();
@@ -46,33 +38,34 @@ namespace PT_RazorPage.Pages.NotificationView
             {
                 Notification.PtId = ptId.Value; // Set the PtId from session
             }
+
+            ViewData["NotiType"] = new SelectList(new List<SelectListItem>
+            {
+                new SelectListItem { Value = "danger", Text = "Danger" },
+                new SelectListItem { Value = "alert", Text = "Alert" }
+            }, "Value", "Text");
         }
 
-        private async Task LoadCustomer()
-        {
-            try
-            {
-                Customers.Clear();
-                var customers = await _customerService.GetListAllCustomer();
-                foreach (var customer in customers)
-                {
-                    Customers.Add(customer);
-                }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message);
-            }
-        }
 
         [BindProperty]
         public Notification Notification { get; set; } = new Notification(); // Initialize Notification
 
-        public async Task<IActionResult> OnPostAsync()
-        {
-            
-            await _notificationService.UpdateNotification(Notification);
-            return RedirectToPage("./Index");
-        }
-    }
+		public async Task<IActionResult> OnPostAsync()
+		{
+			// Ensure the CusId remains unchanged during the update
+			var existingNotification = await _notificationService.GetByIdNotification(Notification.NotiId);
+			if (existingNotification == null)
+			{
+				return NotFound();
+			}
+
+			// Update only the properties you want to change
+			existingNotification.NotiDate = Notification.NotiDate; 
+			existingNotification.NotiContext = Notification.NotiContext; 
+			existingNotification.NotiType = Notification.NotiType;
+																 
+			await _notificationService.UpdateNotification(existingNotification);
+			return RedirectToPage("./Index");
+		}
+	}
 }

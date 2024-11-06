@@ -1,0 +1,83 @@
+﻿<Window x:Class="MyWPF.Views.Order.UpdateOrderView"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:MyWPF.Views.Order"
+        mc:Ignorable="d"
+        Title="UpdateOrderView" Height="600" Width="500">
+    <Grid Margin="10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="Auto"/>
+        </Grid.RowDefinitions>
+
+        <!-- Order Header -->
+        <TextBlock Grid.Row="0" Text="Order Details" 
+                   FontSize="24" FontWeight="Bold"  Foreground="#7B5CD6"
+                   HorizontalAlignment="Center" Margin="0,0,0,10"/>
+
+        <!-- Order Details Section -->
+        <Grid Grid.Row="1">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="auto"/>
+
+            </Grid.ColumnDefinitions>
+
+            <!-- Customer Information Section -->
+            <StackPanel Grid.Column="0" Margin="10,10,10,0" VerticalAlignment="Top">
+                <TextBlock Text="Customer Information" Foreground="#7B5CD6"
+                           FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <!-- Bind Customer Information -->
+                <TextBlock Text="Name:" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="{Binding NewOrder.Cus.CusName}"/>
+
+                <TextBlock Text="Email:" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="{Binding NewOrder.Cus.CusEmail}"/>
+
+                <TextBlock Text="Phone:" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="{Binding NewOrder.Cus.CusPhone}"/>
+
+                <TextBlock Text="Address:" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="{Binding NewOrder.Cus.CusAddress}"/>
+
+
+                <TextBlock Text="Product Information" Foreground="#7B5CD6"
+                           FontSize="18" FontWeight="Bold" Margin="0,0,0,10"/>
+
+                <!-- Bind Product and Order Information -->
+                <TextBlock Text="Product Name:" FontWeight="Bold"/>
+                <TextBlock Text="{Binding NewOrder.Prod.ProdName}"/>
+
+                <TextBlock Text="Quantity:" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="{Binding NewOrder.OrderQuantity}"/>
+
+                <TextBlock Text="Total Price:" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="{Binding NewOrder.OrderTotalPrice, StringFormat=C}"/>
+
+                <TextBlock Text="Order Date:" FontWeight="Bold" Margin="0,10,0,0"/>
+                <TextBlock Text="{Binding NewOrder.OrderStartDate, StringFormat=d}"/>
+
+                <TextBlock Text="*If the information is valid, please update the status." FontWeight="Bold" Foreground="Red" Margin="0,10,0,0"/>
+            </StackPanel>
+        </Grid>
+
+        <!-- Buttons (Update & Cancel) -->
+        <StackPanel Grid.Row="2" Orientation="Horizontal" HorizontalAlignment="Center" Margin="0,20,0,0">
+            <!-- Update Button (bound to UpdateOrderCommand) -->
+            <Button Content="Update" 
+                    Background="#7B5CD6" Foreground="white" Width="100" 
+                    Command="{Binding UpdateOrderCommand}" Margin="0,0,5,0"/>
+
+            <!-- Cancel Button (Click event handler) -->
+            <Button Content="Cancel" 
+                    Background="#7B5CD6" Foreground="white" Width="100" 
+                    Click="CancelButton_Click"/>
+        </StackPanel>
+
+        
+
+    </Grid>
+</Window>

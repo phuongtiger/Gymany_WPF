@@ -9,5 +9,6 @@ namespace BussinessLogic.Interface
         Task AddNotification(Notification item);
         Task UpdateNotification(Notification item);
         Task DeleteNotification(int id);
+        Task<IList<Notification>> GetListNotificationByPt(int ptId);
     }
 }

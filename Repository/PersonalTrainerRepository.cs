@@ -22,7 +22,7 @@ namespace Repository
         public async Task Add(PersonalTrainer item) => await personalTrainerDAO.Add(item);
         public async Task Update(PersonalTrainer item) => await personalTrainerDAO.Update(item);
         public async Task Delete(int id) => await personalTrainerDAO.Delete(id);
+        public async Task<PersonalTrainer> GetByUsername(string username) => await personalTrainerDAO.GetByUsername(username);
 
-        
     }
 }

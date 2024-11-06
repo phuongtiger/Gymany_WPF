@@ -23,5 +23,6 @@ namespace BussinessLogic.Service
         public async Task AddWorkoutPlan(WorkoutPlan item) => await _workoutPlanRepository.Add(item);
         public async Task UpdateWorkoutPlan(WorkoutPlan item) => await _workoutPlanRepository.Update(item);
         public async Task DeleteWorkoutPlan(int id) => await _workoutPlanRepository.Delete(id);
+        public async Task<IList<WorkoutPlan>> GetListWorkoutPlansByPt(int ptId) => await _workoutPlanRepository.GetListWorkoutPlansByPt(ptId);
     }
 }

@@ -15,11 +15,6 @@
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
             <input type="hidden" asp-for="Post.PostId" />
             <div class="form-group">
-                <label asp-for="Post.PostDate" class="control-label"></label>
-                <input asp-for="Post.PostDate" class="form-control" readonly />
-                <span asp-validation-for="Post.PostDate" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="Post.PostContent" class="control-label"></label>
                 <input asp-for="Post.PostContent" class="form-control" />
                 <span asp-validation-for="Post.PostContent" class="text-danger"></span>
@@ -33,27 +28,6 @@
                 <label asp-for="Post.PostImg" class="control-label"></label>
                 <input asp-for="Post.PostImg" class="form-control" />
                 <span asp-validation-for="Post.PostImg" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Post.PtId" class="control-label"></label>
-                <select asp-for="Post.PtId" class="form-control" asp-items="ViewBag.PtId" >
-                    <option value="1" selected="selected">Default Option</option>
-                </select>
-                <span asp-validation-for="Post.PtId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Post.CusId" class="control-label"></label>
-                <select asp-for="Post.CusId" class="form-control" asp-items="ViewBag.CusId">
-                    <option value="1" selected="selected">Default Option</option>
-                </select>
-                <span asp-validation-for="Post.CusId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Post.AdminId" class="control-label"></label>
-                <select asp-for="Post.AdminId" class="form-control" asp-items="ViewBag.AdminId">
-                    <option value="1" selected="selected">Default Option</option>
-                </select>
-                <span asp-validation-for="Post.AdminId" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

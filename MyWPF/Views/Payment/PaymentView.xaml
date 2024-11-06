@@ -41,17 +41,17 @@
                 <!-- Payment Quantity -->
                 <DataGridTextColumn Header="Quantity" Binding="{Binding PayQuantity}" Width="Auto"/>
 
-                <!-- Operations Column with Edit/Delete Buttons -->
+                <!-- Operations Column with Edit/Delete Buttons 
                 <DataGridTemplateColumn Header="Operations" IsReadOnly="True" Width="auto">
                     <DataGridTemplateColumn.CellTemplate>
                         <DataTemplate>
                             <StackPanel Orientation="Horizontal">
-                                <!-- Edit Button -->
+                                
                                 <Button Style="{StaticResource gridEditButton}" Click="Detail_Click" CommandParameter="{Binding PayId}">
                                     <Icon:PackIconMaterial Kind="PencilOutline" Style="{StaticResource gridButtonIcon}"/>
                                 </Button>
 
-                                <!-- Delete Button -->
+                               
                                 <Button Margin="5 0 0 0" Style="{StaticResource gridRemoveButton}"  
                                         Command="{Binding DataContext.DeleteCommand, RelativeSource={RelativeSource AncestorType=DataGrid}}" 
                                         CommandParameter="{Binding PayId}">
@@ -61,6 +61,7 @@
                         </DataTemplate>
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
+                -->
             </DataGrid.Columns>
         </DataGrid>
 

@@ -22,5 +22,6 @@ namespace Repository
         public async Task Add(Customer item) => await DAO.Add(item);
         public async Task Update(Customer item) => await DAO.Update(item);
         public async Task Delete(int id) => await DAO.Delete(id);
+        public async Task<Customer> GetByUsername(string username) => await DAO.GetByUsername(username);
     }
 }

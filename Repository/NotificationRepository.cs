@@ -22,5 +22,6 @@ namespace Repository
         public async Task Add(Notification item) => await DAO.Add(item);
         public async Task Update(Notification item) => await DAO.Update(item);
         public async Task Delete(int id) => await DAO.Delete(id);
+        public async Task<IList<Notification>> GetListNotificationByPt(int ptId) => await DAO.GetListNotificationByPt(ptId);
     }
 }

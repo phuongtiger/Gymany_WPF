@@ -16,5 +16,6 @@ namespace BussinessLogic.Service
         public async Task AddNotification(Notification item) => await _repository.Add(item);
         public async Task UpdateNotification(Notification item) => await _repository.Update(item);
         public async Task DeleteNotification(int id) => await _repository.Delete(id);
+        public async Task<IList<Notification>> GetListNotificationByPt(int ptId) => await _repository.GetListNotificationByPt(ptId);
     }
 }

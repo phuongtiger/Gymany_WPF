@@ -10,5 +10,6 @@ namespace BussinessLogic.Interface
         Task AddCustomer(Customer item);
         Task UpdateCustomer(Customer item);
         Task DeleteCustomer(int id);
+        Task<Customer> GetByUsernameCustomer(string username);
     }
 }

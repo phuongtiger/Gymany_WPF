@@ -17,5 +17,6 @@ namespace Repository
         public async Task Add(Post item) => await DAO.Add(item);
         public async Task Update(Post item) => await DAO.Update(item);
         public async Task Delete(int id) => await DAO.Delete(id);
+        public async Task<IList<Post>> GetListPostByPt(int ptId) => await DAO.GetListPostByPt(ptId);
     }
 }

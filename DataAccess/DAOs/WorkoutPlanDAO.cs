@@ -15,6 +15,16 @@ namespace DataAccess.DAOs
             return await _context.WorkoutPlans.ToListAsync();
         }
 
+        public async Task<IList<WorkoutPlan>> GetListWorkoutPlansByPt(int ptId)
+        {
+            return await _context.WorkoutPlans
+                .Include(w => w.Cus) // Include Customer entity
+                .Include(w => w.Exc) // Include Exercise or related entity
+                .Include(w => w.Pt)  // Include PersonalTrainer entity
+                .Where(w => w.PtId == ptId) // Filter by PtId
+                .ToListAsync();
+        }
+
         public async Task<WorkoutPlan> GetById(int id)
         {
             var item = await _context.WorkoutPlans.FirstOrDefaultAsync(c => c.WorkoutId == id);
@@ -31,13 +41,28 @@ namespace DataAccess.DAOs
 
         public async Task Update(WorkoutPlan item)
         {
-            var existingItem = await GetById(item.WorkoutId);
+            // Retrieve the existing workout plan along with the Exercise entity
+            var existingItem = await _context.WorkoutPlans
+                .Include(w => w.Exc) // Include related Exercise entity if necessary
+                .FirstOrDefaultAsync(wp => wp.WorkoutId == item.WorkoutId);
+
             if (existingItem != null)
             {
-                _context.Entry(existingItem).CurrentValues.SetValues(item);
+                // Update properties, excluding foreign key properties if needed
+                existingItem.WorkoutName = item.WorkoutName;
+                existingItem.WorkoutDescription = item.WorkoutDescription;
+                existingItem.WorkoutStartDate = item.WorkoutStartDate;
+                existingItem.WorkoutEndDate = item.WorkoutEndDate;
+                existingItem.WorkoutSession = item.WorkoutSession;
+                existingItem.WorkoutActivity = item.WorkoutActivity;
+                existingItem.ExcId = 1; // Set the Exercise ID if valid
+
+                _context.WorkoutPlans.Update(existingItem);
+                await _context.SaveChangesAsync();
             }
-            await _context.SaveChangesAsync();
         }
+
+
 
         public async Task Delete(int id)
         {

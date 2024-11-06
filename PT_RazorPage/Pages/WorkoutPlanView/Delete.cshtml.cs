@@ -7,29 +7,30 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
 
 namespace PT_RazorPage.Pages.WorkoutPlanView
 {
     public class DeleteModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        private readonly IWorkoutPlanService _service;
 
-        public DeleteModel(DataAccess.GymanyDbsContext context)
+        public DeleteModel(IWorkoutPlanService service)
         {
-            _context = context;
+            _service = service;
         }
 
         [BindProperty]
         public WorkoutPlan WorkoutPlan { get; set; } = default!;
 
-        public async Task<IActionResult> OnGetAsync(int? id)
+        public async Task<IActionResult> OnGetAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var workoutplan = await _context.WorkoutPlans.FirstOrDefaultAsync(m => m.WorkoutId == id);
+            var workoutplan = await _service.GetByIdWorkoutPlan(id);
 
             if (workoutplan == null)
             {
@@ -42,21 +43,13 @@ namespace PT_RazorPage.Pages.WorkoutPlanView
             return Page();
         }
 
-        public async Task<IActionResult> OnPostAsync(int? id)
+        public async Task<IActionResult> OnPostAsync(int id)
         {
             if (id == null)
             {
                 return NotFound();
             }
-
-            var workoutplan = await _context.WorkoutPlans.FindAsync(id);
-            if (workoutplan != null)
-            {
-                WorkoutPlan = workoutplan;
-                _context.WorkoutPlans.Remove(WorkoutPlan);
-                await _context.SaveChangesAsync();
-            }
-
+                await _service.DeleteWorkoutPlan(id);
             return RedirectToPage("./Index");
         }
     }

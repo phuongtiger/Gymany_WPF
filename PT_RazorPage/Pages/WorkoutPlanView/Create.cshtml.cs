@@ -7,39 +7,60 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
+using System.Collections.ObjectModel;
 
 namespace PT_RazorPage.Pages.WorkoutPlanView
 {
     public class CreateModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        private readonly IWorkoutPlanService _service;
+        private readonly ICustomerService _customerService;
+        public ObservableCollection<Customer> Customers { get; set; }
 
-        public CreateModel(DataAccess.GymanyDbsContext context)
+        public CreateModel(IWorkoutPlanService service, ICustomerService customerService)
         {
-            _context = context;
+            _service = service;
+            _customerService = customerService;
+            Customers = new ObservableCollection<Customer>();
+            _ = LoadCustomer();
         }
 
-        public IActionResult OnGet()
+        public async Task LoadCustomer()
         {
-        ViewData["CusId"] = new SelectList(_context.Customers, "CusId", "CusEmail");
-        ViewData["ExcId"] = new SelectList(_context.Exercises, "ExcId", "ExcDescription");
-        ViewData["PtId"] = new SelectList(_context.PersonalTrainers, "PtId", "PtEmail");
-            return Page();
+            try
+            {
+                Customers.Clear();
+                var customers = await _customerService.GetListAllCustomer();
+                foreach (var customer in customers)
+                {
+                    Customers.Add(customer);
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+            }
         }
 
         [BindProperty]
-        public WorkoutPlan WorkoutPlan { get; set; } = default!;
+        public WorkoutPlan WorkoutPlan { get; set; } = new WorkoutPlan();
 
-        // For more information, see https://aka.ms/RazorPagesCRUD.
+        public IActionResult OnGet()
+        {
+            ViewData["CusId"] = new SelectList(Customers, "CusId", "CusName");
+            // Set default values
+            WorkoutPlan.ExcId = 1;
+
+            return Page();
+        }
+
         public async Task<IActionResult> OnPostAsync()
         {
-            if (!ModelState.IsValid)
-            {
-                return Page();
-            }
-
-            _context.WorkoutPlans.Add(WorkoutPlan);
-            await _context.SaveChangesAsync();
+            var ptId = HttpContext.Session.GetInt32("PtId");
+            WorkoutPlan.PtId = ptId.Value;
+            WorkoutPlan.ExcId = 1;
+            await _service.AddWorkoutPlan(WorkoutPlan);
 
             return RedirectToPage("./Index");
         }

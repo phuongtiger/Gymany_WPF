@@ -17,6 +17,14 @@ namespace DataAccess.DAOs
             return item;
         }
 
+        public async Task<IList<Notification>> GetListNotificationByPt(int ptId)
+        {
+            return await _context.Notifications
+                .Include(w => w.Cus) // Include Customer entity
+                .Include(w => w.Pt)  // Include PersonalTrainer entity
+                .Where(w => w.PtId == ptId) // Filter by PtId
+                .ToListAsync();
+        }
 
         public async Task Add(Notification item)
         {

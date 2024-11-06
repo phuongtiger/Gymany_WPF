@@ -8,6 +8,8 @@ using MyWPF.Views.Notification;
 using MyWPF.Views.Customer;
 using MyWPF.Views.Post;
 using MyWPF.Views.Payment;
+using BussinessLogic.Interface;
+using BussinessLogic.Service;
 
 namespace MyWPF
 {
@@ -63,6 +65,24 @@ namespace MyWPF
         private void Post_Click(object sender, RoutedEventArgs e) => frMain.Content = new PostView();
         private void Payment_Click(object sender, RoutedEventArgs e) => frMain.Content = new PaymentView();
 
+        private void Logout_Click(object sender, RoutedEventArgs e)
+        {
+            // Clear the adminId from application properties to log out the admin
+            if (Application.Current.Properties.Contains("adminId"))
+            {
+                Application.Current.Properties.Remove("adminId");
+            }
+
+            MessageBox.Show("You have successfully logged out.");
+
+            // Retrieve the IAdminService instance from the ServiceProvider
+            var adminService = (IAdminService)App.ServiceProvider.GetService(typeof(IAdminService));
+
+            // Open the LoginView and pass the adminService
+            var loginView = new LoginView(adminService);
+            loginView.Show();
+            this.Close();
+        }
 
     }
 

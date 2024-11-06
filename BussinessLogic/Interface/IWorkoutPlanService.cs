@@ -14,5 +14,6 @@ namespace BussinessLogic.Interface
         Task AddWorkoutPlan(WorkoutPlan item);
         Task UpdateWorkoutPlan(WorkoutPlan item);
         Task DeleteWorkoutPlan(int id);
+        Task<IList<WorkoutPlan>> GetListWorkoutPlansByPt(int ptId);
     }
 }

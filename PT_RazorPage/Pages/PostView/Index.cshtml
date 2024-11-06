@@ -2,7 +2,7 @@
 @model PT_RazorPage.Pages.PostView.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Post Table";
 }
 
 <h1>Index</h1>
@@ -14,25 +14,16 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].PostDate)
+                @Html.DisplayNameFor(model => model.Post.First().PostDate)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].PostContent)
+                @Html.DisplayNameFor(model => model.Post.First().PostContent)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].PostTitle)
+                @Html.DisplayNameFor(model => model.Post.First().PostTitle)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Post[0].PostImg)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Admin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Cus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Post[0].Pt)
+                @Html.DisplayNameFor(model => model.Post.First().PostImg)
             </th>
             <th></th>
         </tr>
@@ -51,15 +42,6 @@
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.PostImg)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Admin.AdminEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Cus.CusEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pt.PtEmail)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.PostId">Edit</a> |

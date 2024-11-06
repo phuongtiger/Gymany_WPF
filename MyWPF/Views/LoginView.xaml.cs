@@ -10,6 +10,10 @@ namespace MyWPF.Views
     /// </summary>
     public partial class LoginView : Window
     {
+        public LoginView()
+        {
+        }
+
         public LoginView(IAdminService adminService) // Accept IAdminService
         {
             InitializeComponent();

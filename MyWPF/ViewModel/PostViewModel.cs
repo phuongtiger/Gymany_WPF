@@ -17,8 +17,7 @@ namespace MyWPF.ViewModel
 
         public ObservableCollection<Post> Posts { get; set; } = new ObservableCollection<Post>();
         public Post _newPost { get; set; } = new Post();
-        public ObservableCollection<string> PostTypes { get; set; }
-
+  
         public ICommand AddPostCommand { get; private set; }
         public ICommand UpdatePostCommand { get; private set; }
         public ICommand DeletePostCommand { get; private set; }
@@ -41,11 +40,10 @@ namespace MyWPF.ViewModel
             _personalTrainerService = App.ServiceProvider.GetRequiredService<IPersonalTrainerService>();
             _customerService = App.ServiceProvider.GetRequiredService<ICustomerService>();
 
-            PostTypes = new ObservableCollection<string> { "Warning", "Alert", "Info" };
 
             LoadPost();
 
-            AddPostCommand = new RelayCommand(AddPostForAll);
+            AddPostCommand = new RelayCommand(AddPost);
             UpdatePostCommand = new RelayCommand(UpdatePost);
             DeletePostCommand = new RelayCommand<int>(DeletePost);
             ImageHelper = new ImageHelper();
@@ -97,48 +95,6 @@ namespace MyWPF.ViewModel
             }
         }
 
-        //private async void AddPostForAll()
-        //{
-        //    try
-        //    {
-        //        // Kiểm tra nếu adminId được thiết lập trong ứng dụng
-        //        if (Application.Current.Properties.Contains("adminId") && Application.Current.Properties["adminId"] != null)
-        //        {
-        //            NewPost.AdminId = (int)Application.Current.Properties["adminId"];
-        //        }
-        //        else
-        //        {
-        //            MessageBox.Show("Admin ID is missing. Please log in with an admin account.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //            return;
-        //        }
-
-        //        // Tạo một bài viết duy nhất mà không gán CusId và PtId cụ thể
-        //        var post = new Post
-        //        {
-        //            PostTitle = NewPost.PostTitle,
-        //            PostContent = NewPost.PostContent,
-        //            PostImg = NewPost.PostImg,
-        //            AdminId = NewPost.AdminId,
-        //            CusId = NewPost.CusId, // Không gán CusId
-        //            PtId = NewPost.PtId // Không gán PtId
-        //        };
-
-        //        // Thêm bài viết vào cơ sở dữ liệu và collection
-        //        await _postService.AddPost(post);
-        //        Posts.Add(post);
-
-        //        // Hiển thị thông báo thành công
-        //        MessageBox.Show("Added a single post for all trainers and customers successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-        //        CloseAction?.Invoke();
-        //    }
-        //    catch (Exception ex)
-        //    {
-        //        MessageBox.Show($"An error occurred while adding the post: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-        //        Console.WriteLine(ex);
-        //    }
-        //}
-
-
         public Post NewPost
         {
             get => _newPost;
@@ -148,66 +104,6 @@ namespace MyWPF.ViewModel
                 OnPropertyChanged();
             }
         }
-
-        private async void AddPostForAll()
-        {
-            try
-            {
-                // Kiểm tra nếu adminId được thiết lập trong ứng dụng
-                if (Application.Current.Properties.Contains("adminId") && Application.Current.Properties["adminId"] != null)
-                {
-                    NewPost.AdminId = (int)Application.Current.Properties["adminId"];
-                }
-                else
-                {
-                    MessageBox.Show("Admin ID is missing. Please log in with an admin account.", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                    return;
-                }
-
-                // Duyệt qua tất cả Customers và PersonalTrainers để tạo bài viết cho mỗi người
-                foreach (var customer in Customers)
-                {
-                    var postForCustomer = new Post
-                    {
-                        PostTitle = NewPost.PostTitle,
-                        PostContent = NewPost.PostContent,
-                        PostImg = NewPost.PostImg,
-                        AdminId = NewPost.AdminId,
-                        CusId = customer.CusId,
-                        PostDate = DateTime.Now
-                    };
-
-                    await _postService.AddPost(postForCustomer);
-                    Posts.Add(postForCustomer);
-                }
-
-                foreach (var trainer in PersonalTrainers)
-                {
-                    var postForTrainer = new Post
-                    {
-                        PostTitle = NewPost.PostTitle,
-                        PostContent = NewPost.PostContent,
-                        PostImg = NewPost.PostImg,
-                        AdminId = NewPost.AdminId,
-                        PtId = trainer.PtId,
-                        PostDate = DateTime.Now
-                    };
-
-                    await _postService.AddPost(postForTrainer);
-                    Posts.Add(postForTrainer);
-                }
-
-                // Hiển thị thông báo thành công
-                MessageBox.Show("Added post for all personal trainers and customers successfully.", "Success", MessageBoxButton.OK, MessageBoxImage.Information);
-                CloseAction?.Invoke();
-            }
-            catch (Exception ex)
-            {
-                MessageBox.Show($"An error occurred while adding posts: {ex.Message}", "Error", MessageBoxButton.OK, MessageBoxImage.Error);
-                Console.WriteLine(ex);
-            }
-        }
-
 
 
         private async void AddPost()
@@ -221,6 +117,8 @@ namespace MyWPF.ViewModel
 
                 // Set the current date and time
                 NewPost.PostDate = DateTime.Now; // Assuming PostDate is of type DateTime
+                NewPost.CusId = 1;
+                NewPost.PtId = 1;
 
                 if (!string.IsNullOrEmpty(_newImagePath))
                 {

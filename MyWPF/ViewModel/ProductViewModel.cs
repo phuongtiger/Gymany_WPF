@@ -89,6 +89,17 @@ namespace MyWPF.ViewModel
 
         private async void AddProduct()
         {
+            // Check for required fields and valid values
+            if (string.IsNullOrWhiteSpace(NewProduct.ProdName) ||
+                string.IsNullOrWhiteSpace(NewProduct.ProdDescription) ||
+                NewProduct.ProdAmount == null || NewProduct.ProdAmount <= 0 ||
+                NewProduct.ProdPrice == null || NewProduct.ProdPrice <= 0 ||
+                string.IsNullOrEmpty(_newImagePath))
+            {
+                MessageBox.Show("Please fill in all required fields and ensure values are valid.", "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+                return;
+            }
+
             if (!string.IsNullOrEmpty(_newImagePath))
             {
                 NewProduct.ProdImg = _newImagePath; // Apply the new image path when saving

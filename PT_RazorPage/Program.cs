@@ -37,9 +37,13 @@ builder.Services.AddScoped<CustomerDAO>();
 builder.Services.AddScoped<ICustomerRepository, CustomerRepository>();
 builder.Services.AddScoped<ICustomerService, CustomerService>();
 
-builder.Services.AddScoped<ExerciseDAO>();
-builder.Services.AddScoped<IExerciseRepository, ExerciseRepository>();
-builder.Services.AddScoped<IExerciseService, ExerciseService>();
+builder.Services.AddScoped<WorkoutPlanDAO>();
+builder.Services.AddScoped<IWorkoutPlanRepository, WorkoutPlanRepository>();
+builder.Services.AddScoped<IWorkoutPlanService, WorkoutPlanService>();
+
+builder.Services.AddScoped<PersonalTrainerDAO>();
+builder.Services.AddScoped<IPersonalTrainerRepository, PersonalTrainerRepository>();
+builder.Services.AddScoped<IPersonalTrainerService, PersonalTrainerService>();
 
 var app = builder.Build();
 
@@ -58,8 +62,26 @@ app.UseRouting();
 // Use session before UseAuthorization
 app.UseSession();
 
+app.Use(async (context, next) =>
+{
+    // Check if the user is already on the Login page or authenticated
+    if (!context.Session.Keys.Contains("PtId") && !context.Request.Path.StartsWithSegments("/Login"))
+    {
+        // Redirect to Login if the session does not contain PtId
+        context.Response.Redirect("/Login");
+        return;
+    }
+    await next();
+});
+
 app.UseAuthorization();
 
 app.MapRazorPages();
+
+//Call the Controller in the View to retrieve and display the image
+app.MapControllerRoute(
+    name: "default",
+    pattern: "{controller=Home}/{action=Index}/{id?}");
+
 
 app.Run();

@@ -1,0 +1,81 @@
+﻿@page "{id:int}" 
+@model PT_RazorPage.Pages.EditProfileModel
+@{
+    ViewData["Title"] = "Edit Profile";
+}
+
+<div class="container my-5">
+    <div class="card">
+        <div class="card-header text-center">
+            <h2>Edit Personal Trainer Profile</h2>
+        </div>
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <!-- Profile Image Upload -->
+                    <div class="col-md-4 text-center">
+                        <img src="/Image/Load?filePath=@Model.PersonalTrainer.PtImg" alt="Profile Image" class="img-fluid rounded-circle" style="width: 200px; height: 200px;">
+                        <div class="mt-3">
+                            <label class="form-label">Upload New Image</label>
+                            <input type="file" class="form-control" asp-for="NewProfileImage" />
+                        </div>
+                    </div>
+
+                    <!-- Profile Information -->
+                    <div class="col-md-8">
+                        <div class="mb-3">
+                            <label asp-for="PersonalTrainer.PtUsername" class="form-label">Username</label>
+                            <input asp-for="PersonalTrainer.PtUsername" class="form-control" readonly/>
+                            <span asp-validation-for="PersonalTrainer.PtUsername" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PersonalTrainer.PtName" class="form-label">Name</label>
+                            <input asp-for="PersonalTrainer.PtName" class="form-control" />
+                            <span asp-validation-for="PersonalTrainer.PtName" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PersonalTrainer.PtAge" class="form-label">Age</label>
+                            <input asp-for="PersonalTrainer.PtAge" type="date" class="form-control" />
+                            <span asp-validation-for="PersonalTrainer.PtAge" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PersonalTrainer.PtAddress" class="form-label">Address</label>
+                            <input asp-for="PersonalTrainer.PtAddress" class="form-control" />
+                            <span asp-validation-for="PersonalTrainer.PtAddress" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PersonalTrainer.PtSalary" class="form-label">Salary</label>
+                            <input asp-for="PersonalTrainer.PtSalary" type="number" class="form-control" readonly/>
+                            <span asp-validation-for="PersonalTrainer.PtSalary" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PersonalTrainer.PtEmail" class="form-label">Email</label>
+                            <input asp-for="PersonalTrainer.PtEmail" type="email" class="form-control" />
+                            <span asp-validation-for="PersonalTrainer.PtEmail" class="text-danger"></span>
+                        </div>
+
+                        <div class="mb-3">
+                            <label asp-for="PersonalTrainer.PtPhone" class="form-label">Phone</label>
+                            <input asp-for="PersonalTrainer.PtPhone" class="form-control" />
+                            <span asp-validation-for="PersonalTrainer.PtPhone" class="text-danger"></span>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="text-center mt-4">
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                    <a asp-page="./Index" class="btn btn-secondary">Cancel</a>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial" />
+}

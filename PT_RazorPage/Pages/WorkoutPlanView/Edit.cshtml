@@ -45,20 +45,11 @@
                 <span asp-validation-for="WorkoutPlan.WorkoutActivity" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="WorkoutPlan.PtId" class="control-label"></label>
-                <select asp-for="WorkoutPlan.PtId" class="form-control" asp-items="ViewBag.PtId"></select>
-                <span asp-validation-for="WorkoutPlan.PtId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="WorkoutPlan.ExcId" class="control-label"></label>
-                <select asp-for="WorkoutPlan.ExcId" class="form-control" asp-items="ViewBag.ExcId"></select>
-                <span asp-validation-for="WorkoutPlan.ExcId" class="text-danger"></span>
-            </div>
-            <div class="form-group">
                 <label asp-for="WorkoutPlan.CusId" class="control-label"></label>
-                <select asp-for="WorkoutPlan.CusId" class="form-control" asp-items="ViewBag.CusId"></select>
+                <input asp-for="WorkoutPlan.CusId" class="form-control" readonly />
                 <span asp-validation-for="WorkoutPlan.CusId" class="text-danger"></span>
             </div>
+
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />
             </div>

@@ -14,5 +14,6 @@ namespace BussinessLogic.Interface
         Task AddPersonalTrainer(PersonalTrainer item);
         Task UpdatePersonalTrainer(PersonalTrainer item);
         Task DeletePersonalTrainer(int id);
+        Task<PersonalTrainer> GetByUsernamePersonalTrainer(string username);
     }
 }

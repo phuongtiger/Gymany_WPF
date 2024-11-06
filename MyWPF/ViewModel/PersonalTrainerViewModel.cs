@@ -87,21 +87,24 @@ namespace MyWPF.ViewModel
             }
         }
 
-
         private async Task<bool> CheckAccount(string username)
         {
-            var existingCustomer = PersonalTrainers.FirstOrDefault(c => c.PtUsername == username);
+            var existingCustomer = await _personalTrainerService.GetByUsernamePersonalTrainer(username);
             if (existingCustomer != null)
             {
-                MessageBox.Show("Username already exists. Please choose a different username.", "Duplicate Username", MessageBoxButton.OK, MessageBoxImage.Warning);
-                return false;
+                if (existingCustomer.PtUsername == username)
+                {
+                    MessageBox.Show($"Username {existingCustomer.PtUsername} already exists. Please choose a different username.", "Duplicate Username", MessageBoxButton.OK, MessageBoxImage.Warning);
+                    return false;
+                }
             }
             return true;
         }
 
+
         private async void AddPersonalTrainer()
         {
-            if (!await CheckAccount(NewPersonalTrainer.PtName))
+            if (!await CheckAccount(NewPersonalTrainer.PtUsername))
             {
                 return;
             }
@@ -161,14 +164,13 @@ namespace MyWPF.ViewModel
         {
             if (NewPersonalTrainer != null)
             {
-                var result = MessageBox.Show($"Do you want to delete \"{NewPersonalTrainer.PtName}\"?",
+                var result = MessageBox.Show($"Do you want to delete PT?",
                                              "Confirm delete!",
                                              MessageBoxButton.YesNo,
                                              MessageBoxImage.Warning);
                 if (result == MessageBoxResult.Yes)
                 {
                     await _personalTrainerService.DeletePersonalTrainer(ptId);
-                    PersonalTrainers.Remove(NewPersonalTrainer);
                     LoadPersonalTrainer();
                 }
             }

@@ -9,5 +9,6 @@ namespace Repository.Interface
         Task Add(Post item);
         Task Update(Post item);
         Task Delete(int id);
+        Task<IList<Post>> GetListPostByPt(int ptId);
     }
 }

@@ -67,9 +67,6 @@
                     </DataGridTemplateColumn.CellTemplate>
                 </DataGridTemplateColumn>
                 
-                <!-- Personal Trainer Username Column -->
-                <DataGridTextColumn Header="Username" Binding="{Binding PtUsername}" Width="*"/>
-
                 <!-- Personal Trainer Name Column -->
                 <DataGridTextColumn Header="Name" Binding="{Binding PtName}" Width="*"/>
 

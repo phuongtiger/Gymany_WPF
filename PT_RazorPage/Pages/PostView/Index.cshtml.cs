@@ -7,26 +7,34 @@ using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.EntityFrameworkCore;
 using DataAccess;
 using Model;
+using BussinessLogic.Interface;
 
 namespace PT_RazorPage.Pages.PostView
 {
     public class IndexModel : PageModel
     {
-        private readonly DataAccess.GymanyDbsContext _context;
+        private readonly IPostService _postService;
 
-        public IndexModel(DataAccess.GymanyDbsContext context)
+        public IndexModel(IPostService postService)
         {
-            _context = context;
+            _postService = postService;
         }
 
-        public IList<Post> Post { get;set; } = default!;
+        public IList<Post> Post { get; set; } = default!;
 
         public async Task OnGetAsync()
         {
-            Post = await _context.Posts
-                .Include(p => p.Admin)
-                .Include(p => p.Cus)
-                .Include(p => p.Pt).ToListAsync();
+            var ptId = HttpContext.Session.GetInt32("PtId");
+
+            // Load workout plans associated with the PtId
+            if (ptId.HasValue)
+            {
+                Post = await _postService.GetListPostByPt(ptId.Value);
+            }
+            else
+            {
+                Post = new List<Post>(); // Handle the case where PtId is not set
+            }
         }
     }
 }

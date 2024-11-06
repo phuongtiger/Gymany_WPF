@@ -17,7 +17,6 @@ namespace BussinessLogic.Service
         public async Task AddPersonalTrainer(PersonalTrainer item) => await _personalTrainerRepository.Add(item);
         public async Task UpdatePersonalTrainer(PersonalTrainer item) => await _personalTrainerRepository.Update(item);
         public async Task DeletePersonalTrainer(int id) => await _personalTrainerRepository.Delete(id);
-
-       
+        public async Task<PersonalTrainer> GetByUsernamePersonalTrainer(string username) => await _personalTrainerRepository.GetByUsername(username);
     }
 }

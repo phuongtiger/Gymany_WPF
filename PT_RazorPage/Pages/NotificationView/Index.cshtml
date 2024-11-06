@@ -2,7 +2,7 @@
 @model PT_RazorPage.Pages.NotificationView.IndexModel
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Notification Table";
 }
 
 <h1>Index</h1>
@@ -14,19 +14,13 @@
     <thead>
         <tr>
             <th>
-                @Html.DisplayNameFor(model => model.Notification[0].NotiDate)
-            </th>
-            <th>
                 @Html.DisplayNameFor(model => model.Notification[0].NotiContext)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.Notification[0].NotiType)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.Notification[0].Cus)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Notification[0].Pt)
+                Customer Name
             </th>
             <th></th>
         </tr>
@@ -35,19 +29,13 @@
 @foreach (var item in Model.Notification) {
         <tr>
             <td>
-                @Html.DisplayFor(modelItem => item.NotiDate)
-            </td>
-            <td>
                 @Html.DisplayFor(modelItem => item.NotiContext)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.NotiType)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.Cus.CusEmail)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Pt.PtEmail)
+                @Html.DisplayFor(modelItem => item.Cus.CusName)
             </td>
             <td>
                 <a asp-page="./Edit" asp-route-id="@item.NotiId">Edit</a> |
